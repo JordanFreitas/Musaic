@@ -26,6 +26,8 @@ public class Play extends AppCompatActivity {
     Button play, next, back, shuffle, repeat, playlist;
     TextView album, artist, songTitle;
     int position;
+//    private int seekForwardTime = 5000;
+//    private int seekBackwardTime = 5000;
     private Handler handler = new Handler();
     private ArrayList<HashMap<String, String>> songsList;
 
@@ -74,6 +76,21 @@ public class Play extends AppCompatActivity {
         back = (Button) findViewById(R.id.back);
         shuffle = (Button) findViewById(R.id.shuffle);
         repeat = (Button) findViewById(R.id.repeat);
+
+
+
+//        MediaMetadataRetriever metaRetriver;
+//        byte[] art;
+//
+//        metaRetriver = new MediaMetadataRetriever();
+//        metaRetriver.setDataSource(songsList.get(songIndex).get("songPath"));
+//        try {
+//            art = metaRetriver.getEmbeddedPicture();
+//            Bitmap songImage = BitmapFactory
+//                    .decodeByteArray(art, 0, art.length);
+
+
+
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,7 +318,7 @@ public class Play extends AppCompatActivity {
             if(position < (songsList.size() - 1)){
                 playSong(position + 1);
                 position ++;
-            }else{
+            }else {
                 // play first song
                 playSong(0);
                 position = 0;
@@ -313,5 +330,8 @@ public class Play extends AppCompatActivity {
     public void onDestroy(){
         super.onDestroy();
         mediaPlayer.release();
+        super.onDestroy();
+        mediaPlayer.release();
+        handler.removeCallbacks(mUpdateTimeTask)
     }
 }
