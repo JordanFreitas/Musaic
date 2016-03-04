@@ -24,7 +24,7 @@ public class Play extends AppCompatActivity {
     boolean shuffleVal;
     boolean repeatVal;
     Button play, next, back, shuffle, repeat, playlist;
-    TextView album, artist, songTitle;
+    TextView album, artist, songTitle, rightTime, leftTime;
     int position;
 //    private int seekForwardTime = 5000;
 //    private int seekBackwardTime = 5000;
@@ -60,7 +60,8 @@ public class Play extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(getApplicationContext(), (uri from the string position of the songs))
         mediaPlayer.start();
 
-
+        rightTime = (TextView) findViewById(R.id.rightTimeDisplay);
+        leftTime = (TextView) findViewById(R.id.leftTimeDisplay);
         album = (TextView) findViewById(R.id.album);
         artist = (TextView) findViewById(R.id.artist);
         songTitle = (TextView) findViewById(R.id.songTitle);
@@ -249,9 +250,9 @@ public class Play extends AppCompatActivity {
             long currentDuration = mediaPlayer.getCurrentPosition();
 
             // Displaying Total Duration time
-            songTotalDurationLabel.setText(""+seekHelper.timerConvert(totalDuration));
+            rightTime.setText("" + seekHelper.timerConvert(totalDuration));
             // Displaying time completed playing
-            songCurrentDurationLabel.setText(""+seekHelper.timerConvert(currentDuration));
+            leftTime.setText(""+seekHelper.timerConvert(currentDuration));
 
             // Updating progress bar
             int progress = (int)(seekHelper.progress(currentDuration, totalDuration));

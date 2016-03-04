@@ -94,6 +94,14 @@
         android:layout_below="@+id/artist"
         android:layout_width="100sp"
         android:layout_height="50sp" />
+    <TextView
+        android:id="@+id/leftTimeDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/rightTimeDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>
