@@ -47,6 +47,10 @@
         android:layout_width="50sp"
         android:layout_height="wrap_content" />
     <Button
+        android:id="@+id/playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
         android:id="@+id/shuffle"
         android:layout_below="@+id/albumArt"
         android:layout_toRightOf="@+id/next"
