@@ -23,20 +23,13 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final String TAG = "Music";
-    private ArrayAdapter<Song> adapter;   // holds the list of songs to display
+    private ArrayList<Song> songs; //holds the list of songs to display
+    private SongAdapter adapter;   //displays the songs
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //controller
-        adapter = new ArrayAdapter<>(
-                this, R.layout.song_item, R.id.songItem);
-
-        //support ListView or GridView
-        AdapterView listView = (AdapterView)findViewById(R.id.listView);
-        listView.setAdapter(adapter);
 
         getSongs();
     }
@@ -82,9 +75,18 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 String title = musicCursor.getString(titleColumn);
                 String artist = musicCursor.getString(artistColumn);
                 Log.v(TAG, title);
-                adapter.add(new Song(id, title, artist));
+                songs.add(new Song(id, title, artist));
             }
             while (musicCursor.moveToNext());
+
+            // set view of playlist
+            // controller
+            adapter = new SongAdapter(
+                    this, R.layout.song_item, songs);
+
+            //support ListView or GridView
+            AdapterView listView = (AdapterView)findViewById(R.id.listView);
+            listView.setAdapter(adapter);
         }
     }
 
