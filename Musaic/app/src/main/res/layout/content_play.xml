@@ -43,7 +43,7 @@
         android:layout_below="@+id/albumArt"
         android:layout_toRightOf="@+id/repeat"
         android:layout_toEndOf="@+id/repeat"
-        android:text="<"
+        android:text="hi"
         android:layout_width="50sp"
         android:layout_height="wrap_content" />
     <Button

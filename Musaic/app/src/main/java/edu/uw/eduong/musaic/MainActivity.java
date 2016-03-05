@@ -23,21 +23,15 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final String TAG = "Music";
-    private ArrayAdapter<Song> adapter;   // holds the list of songs to display
+    private ArrayList<Song> songs; //holds the list of songs to display
+    private SongAdapter adapter;   //displays the songs
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //controller
-        adapter = new ArrayAdapter<>(
-                this, R.layout.song_item, R.id.songItem);
-
-        //support ListView or GridView
-        AdapterView listView = (AdapterView)findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-
+        songs = new ArrayList<Song>();
         getSongs();
     }
 
@@ -66,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         // from http://code.tutsplus.com/tutorials/create-a-music-player-on-android-project-setup--mobile-22764
         ContentResolver musicResolver = getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+        String selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";  //make sure we only get music
+        Cursor musicCursor = musicResolver.query(musicUri, null, selection, null, null);
 
         if (musicCursor != null && musicCursor.moveToFirst()) {
             //get columns
@@ -76,15 +71,31 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                     (android.provider.MediaStore.Audio.Media._ID);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
+            int albumIdColumn = musicCursor.getColumnIndex
+                    (android.provider.MediaStore.Audio.Media.ALBUM_ID);
+            int pathColumn = musicCursor.getColumnIndex
+                    (android.provider.MediaStore.Audio.Media.DATA);
+
             //add songs to list
             do {
                 long id = musicCursor.getLong(idColumn);
                 String title = musicCursor.getString(titleColumn);
                 String artist = musicCursor.getString(artistColumn);
-                Log.v(TAG, title);
-                adapter.add(new Song(id, title, artist));
+                long albumId = musicCursor.getLong(albumIdColumn);
+                String path = musicCursor.getString(pathColumn);
+                Log.v(TAG, title + id + artist + albumId);
+                songs.add(new Song(id, title, artist, albumId, path));
             }
             while (musicCursor.moveToNext());
+
+            // set view of playlist
+            // controller
+            adapter = new SongAdapter(
+                    this, R.layout.song_item, songs);
+
+            //support ListView or GridView
+            AdapterView listView = (AdapterView)findViewById(R.id.listView);
+            listView.setAdapter(adapter);
         }
     }
 
