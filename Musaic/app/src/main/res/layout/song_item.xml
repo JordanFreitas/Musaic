@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- each song item -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/songItem"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"/>
+    android:layout_margin="10dp"
+    >
+
+    <!-- song artwork -->
+    <ImageView
+        android:id="@+id/songArt"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_margin="10dp"
+        />
+
+    <!-- song title -->
+    <TextView
+        android:id="@+id/songTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        />
+</LinearLayout>
