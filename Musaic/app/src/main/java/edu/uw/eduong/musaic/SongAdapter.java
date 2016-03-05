@@ -30,6 +30,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
         this.songs = songs;
     }
 
+    // display of each song item in the list
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -55,6 +56,14 @@ public class SongAdapter extends ArrayAdapter<Song> {
         } catch (Exception e) {
             Log.v(TAG, "Could not set song artwork");
         }
+
+        // set the on click action of the item
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG, "hi");
+            }
+        });
 
         return view;
     }
