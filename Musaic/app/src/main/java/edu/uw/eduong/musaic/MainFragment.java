@@ -1,7 +1,6 @@
 package edu.uw.eduong.musaic;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -35,6 +34,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     private static final String TAG = "Musaic";
     private ArrayList<Song> songs; //holds the list of songs to display
     private SongAdapter adapter;   //displays the songs
+    private Menu menu;             //menu
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +66,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         menu.clear();   // clears menu as it is recreated when rotating
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu, menu);
+        this.menu = menu;
     }
 
     // handle menu click events
@@ -76,17 +77,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
             case R.id.action_help:
                 return true;
             case R.id.action_sort:
-                Collections.reverse(songs);
-                adapter.notifyDataSetChanged();
-
-                TextView textView = (TextView) getActivity().findViewById(item.getItemId());
-                String text = textView.getText().toString();
-                if (text.equals("A-Z")) {
-                    textView.setText("Z-A");
-                } else {
-                    textView.setText("A-Z");
-
-                }
+                sortSongs();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -178,7 +169,17 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
 
     // sort songs
     public void sortSongs() {
+        Collections.reverse(songs);
+        adapter.notifyDataSetChanged();
 
+        MenuItem menuItem = (MenuItem) menu.findItem(R.id.action_sort);
+        String text = menuItem.getTitle().toString();
+        if (text.equals("A-Z")) {
+            menuItem.setTitle("Z-A");
+        } else {
+            menuItem.setTitle("A-Z");
+
+        }
     }
 
     // requests permission to access external storage to get songs
@@ -195,6 +196,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         }
     }
 
+    // when song item is clicked
     @Override
     public void songClick(int position) {
         //dostuff;
