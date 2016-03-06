@@ -40,12 +40,11 @@ public class Song implements Comparable<Song> {
 
     public Bitmap getAlbumArt() { return this.albumArt; }
 
-    public String getPath() {
-        return this.path;
-    }
+    public String getPath() { return this.path; }
 
     @Override
     public int compareTo(Song another) {
+
         return this.title.compareTo(another.title);
     }
 }
