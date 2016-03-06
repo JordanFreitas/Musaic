@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         PlayFragment play = new PlayFragment();
 
         // Show Main and Detail if dual view, else just detail
-        if ((FrameLayout) findViewById(R.id.container) == null) {
+        if (findViewById(R.id.container) == null) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.pane_left, new MainFragment(), "main")
                     .replace(R.id.pane_right, play)
