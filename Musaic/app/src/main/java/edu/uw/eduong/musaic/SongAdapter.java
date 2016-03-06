@@ -1,21 +1,16 @@
 package edu.uw.eduong.musaic;
 
-import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +18,7 @@ import java.util.ArrayList;
  */
 public class SongAdapter extends ArrayAdapter<Song> {
     private static final String TAG = "Music";
+    private SongAdapterClick click;
     private ArrayList<Song> songs;
 
     public SongAdapter(Context context, int textViewResource, ArrayList<Song> songs) {
@@ -32,7 +28,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
 
     // display each song item in the list
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
         if (view == null) {
@@ -40,7 +36,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
             view = inflater.inflate(R.layout.song_item, null);
         }
 
-        Song song = songs.get(position);
+        final Song song = songs.get(position);
 
         // set song title
         TextView textView = (TextView) view.findViewById(R.id.songTitle);
@@ -50,15 +46,40 @@ public class SongAdapter extends ArrayAdapter<Song> {
         ImageView imageView = (ImageView) view.findViewById(R.id.songArt);
         imageView.setImageBitmap(song.getAlbumArt());
 
-        // set the on click action of the item
+        PopupMenu popup = new PopupMenu(getContext(), view);
+        popup.getMenuInflater().inflate(R.menu.menu_song, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch(item.getItemId())
+                {
+                    case R.id.action_lyrics:
+                        return true;
+                    case R.id.action_wiki:
+                        return true;
+                    default:
+                        return onMenuItemClick(item);
+                }
+            }
+        });
+
+            // set the on click action of the item
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v(TAG, "hi");
+                // swap the fragments
+                click.songClick(position);
             }
         });
 
         return view;
     }
 
+    public void setClick(SongAdapterClick click) {
+        this.click = click;
+    }
+
+    public interface SongAdapterClick {
+        public void songClick(int position);
+    }
 }

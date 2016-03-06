@@ -1,5 +1,6 @@
 //package edu.uw.eduong.musaic;
 //
+//import android.app.Fragment;
 //import android.content.Intent;
 //import android.media.MediaPlayer;
 //import android.os.Bundle;
@@ -17,7 +18,7 @@
 //import java.util.HashMap;
 //import java.util.Random;
 //
-//public class Play extends AppCompatActivity {
+//public class Play extends Fragment {
 //    SeekHelper seekHelper;
 //    MediaPlayer mediaPlayer;
 //    SeekBar seekBar;
