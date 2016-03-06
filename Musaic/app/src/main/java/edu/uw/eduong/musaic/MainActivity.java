@@ -2,8 +2,11 @@ package edu.uw.eduong.musaic;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -12,12 +15,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 // Displays a list of music on your phone which can be clicked on to play
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -33,6 +44,29 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         songs = new ArrayList<Song>();
         getSongs();
+    }
+
+    // create menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    // handle menu click events
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.action_help:
+                return true;
+            case R.id.action_sort:
+                sortSongs();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     // Get list of songs on device
@@ -83,10 +117,25 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 String artist = musicCursor.getString(artistColumn);
                 long albumId = musicCursor.getLong(albumIdColumn);
                 String path = musicCursor.getString(pathColumn);
+                Bitmap artwork = null;
                 Log.v(TAG, title + id + artist + albumId);
-                songs.add(new Song(id, title, artist, albumId, path));
+
+                try {
+                    Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+                    Uri uri = ContentUris.withAppendedId(sArtworkUri, albumId);
+                    ContentResolver res = getContentResolver();
+                    InputStream in = res.openInputStream(uri);
+                    artwork = BitmapFactory.decodeStream(in);
+                } catch (Exception e) {
+                    Log.v(TAG, "Album artwork not found");
+                }
+
+                songs.add(new Song(id, title, artist, albumId, artwork, path));
             }
             while (musicCursor.moveToNext());
+
+            // default sort songs in alphabetical order
+            Collections.sort(songs);
 
             // set view of playlist
             // controller
@@ -108,6 +157,22 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             return true;
         }
         return false;
+    }
+
+    // sort songs
+    public void sortSongs() {
+        Collections.reverse(songs);
+        adapter.notifyDataSetChanged();
+
+        TextView textView = (TextView) findViewById(R.id.action_sort);
+        if (textView.equals("A-Z")) {
+            textView.setText("Z-A");
+        } else {
+            textView.setText("A-Z");
+
+        }
+
+
     }
 
     // http://stackoverflow.com/questions/33162152/storage-permission-error-in-marshmallow/33162201
