@@ -30,7 +30,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
         this.songs = songs;
     }
 
-    // display of each song item in the list
+    // display each song item in the list
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -40,22 +40,15 @@ public class SongAdapter extends ArrayAdapter<Song> {
             view = inflater.inflate(R.layout.song_item, null);
         }
 
+        Song song = songs.get(position);
+
         // set song title
         TextView textView = (TextView) view.findViewById(R.id.songTitle);
-        textView.setText(songs.get(position).getTitle());
+        textView.setText(song.getTitle());
 
         // set song album art
         ImageView imageView = (ImageView) view.findViewById(R.id.songArt);
-        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-        Uri uri = ContentUris.withAppendedId(sArtworkUri, songs.get(position).getAlbumId());
-        ContentResolver res = getContext().getContentResolver();
-        try {
-            InputStream in = res.openInputStream(uri);
-            Bitmap artwork = BitmapFactory.decodeStream(in);
-            imageView.setImageBitmap(artwork);
-        } catch (Exception e) {
-            Log.v(TAG, "Could not set song artwork");
-        }
+        imageView.setImageBitmap(song.getAlbumArt());
 
         // set the on click action of the item
         view.setOnClickListener(new View.OnClickListener() {
