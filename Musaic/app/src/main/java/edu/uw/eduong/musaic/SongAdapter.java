@@ -63,7 +63,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
             }
         });
 
-            // set the on click action of the item
+        // set the on click action of the item
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +81,6 @@ public class SongAdapter extends ArrayAdapter<Song> {
     }
 
     public interface SongAdapterClick {
-        public void songClick(int position);
+        void songClick(int position);
     }
 }

@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,6 +37,9 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     private SongAdapter adapter;   //displays the songs
     private Menu menu;             //menu
 
+    // Empty constructor
+    public MainFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,7 +59,9 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         AdapterView listView = (AdapterView)rootView.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
-        getSongs();
+        //getSongs();
+        songDataTask getSongs = new songDataTask();
+        getSongs.execute();
 
         return rootView;
     }
@@ -81,6 +87,63 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public class songDataTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // from http://code.tutsplus.com/tutorials/create-a-music-player-on-android-project-setup--mobile-22764
+            ContentResolver musicResolver = getActivity().getContentResolver();
+            Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            String selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";  //make sure we only get music
+            Cursor musicCursor = musicResolver.query(musicUri, null, selection, null, null);
+
+            if (musicCursor != null && musicCursor.moveToFirst()) {
+                //get columns
+                int titleColumn = musicCursor.getColumnIndex
+                        (android.provider.MediaStore.Audio.Media.TITLE);
+                int idColumn = musicCursor.getColumnIndex
+                        (android.provider.MediaStore.Audio.Media._ID);
+                int artistColumn = musicCursor.getColumnIndex
+                        (android.provider.MediaStore.Audio.Media.ARTIST);
+                int albumIdColumn = musicCursor.getColumnIndex
+                        (android.provider.MediaStore.Audio.Media.ALBUM_ID);
+                int pathColumn = musicCursor.getColumnIndex
+                        (android.provider.MediaStore.Audio.Media.DATA);
+
+                //add songs to list
+                do {
+                    long id = musicCursor.getLong(idColumn);
+                    String title = musicCursor.getString(titleColumn);
+                    String artist = musicCursor.getString(artistColumn);
+                    long albumId = musicCursor.getLong(albumIdColumn);
+                    String path = musicCursor.getString(pathColumn);
+                    Bitmap artwork = null;
+                    Log.v(TAG, title + id + artist + albumId);
+
+                    try {
+                        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+                        Uri uri = ContentUris.withAppendedId(sArtworkUri, albumId);
+                        ContentResolver res = getActivity().getContentResolver();
+                        InputStream in = res.openInputStream(uri);
+                        artwork = BitmapFactory.decodeStream(in);
+                    } catch (Exception e) {
+                        Log.v(TAG, "Album artwork not found");
+                    }
+
+                    songs.add(new Song(id, title, artist, albumId, artwork, path));
+                }
+                while (musicCursor.moveToNext());
+
+                // default sort songs in alphabetical order
+                Collections.sort(songs);
+
+                musicCursor.close();
+            }
+
+            return null;
         }
     }
 
