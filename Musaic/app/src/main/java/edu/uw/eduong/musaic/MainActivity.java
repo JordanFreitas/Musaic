@@ -1,6 +1,5 @@
 package edu.uw.eduong.musaic;
 
-import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,7 +11,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // dual view of Summary and Main List if horizontal
         if (findViewById(R.id.container) == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.pane_left, new MainFragment(), "main")
@@ -28,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
     // for song selector on song click
     public void songSelected(Song song) {
         PlayFragment play = new PlayFragment();
+
+        // data song to a bundle
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("song", song);
+
+        play.setArguments(bundle);
 
         // Show Main List and Play if dual view, else just the play
         if (findViewById(R.id.container) == null) {
