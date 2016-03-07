@@ -61,6 +61,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         AdapterView listView = (AdapterView)rootView.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
+        // get and display songs
         getSongs();
 
         return rootView;
@@ -220,7 +221,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
                 if (ContextCompat.checkSelfPermission(getContext(),
                         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     songDataTask getSongs = new songDataTask();
-                    getSongs.execute();
+                    getSongs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } else {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 255);
                 }
