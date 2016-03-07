@@ -90,6 +90,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         }
     }
 
+    // get music and display
     public class songDataTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -119,14 +120,12 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
                     String artist = musicCursor.getString(artistColumn);
                     long albumId = musicCursor.getLong(albumIdColumn);
                     String path = musicCursor.getString(pathColumn);
-                    Bitmap artwork = null;
                     Log.v(TAG, title + id + artist + albumId);
-
 
                     Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
                     Uri uri = ContentUris.withAppendedId(sArtworkUri, albumId);
                     ContentResolver res = getActivity().getContentResolver();
-                    artwork = decodeSampledBitmapFromResource(uri, res, 100, 100);
+                    Bitmap artwork = decodeSampledBitmapFromResource(uri, res, 100, 100);
 
                     songs.add(new Song(id, title, artist, albumId, artwork, path));
                 }
@@ -146,6 +145,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         }
     }
 
+    // resize album artwork
     public static Bitmap decodeSampledBitmapFromResource(Uri uri, ContentResolver res, int reqWidth, int reqHeight) {
         InputStream in = null;
         Bitmap bitmap = null;
@@ -188,6 +188,8 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         return bitmap;
     }
 
+
+    // For resizing album artwork bitmap
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
