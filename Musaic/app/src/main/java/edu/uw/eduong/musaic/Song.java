@@ -47,7 +47,7 @@ public class Song implements Comparable<Song>, Parcelable {
     @Override
     public int compareTo(Song another) {
 
-        return this.title.compareToIgnoreCase(another.title);
+        return this.title.compareTo(another.title);
     }
 
     protected Song(Parcel in) {
