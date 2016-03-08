@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -36,6 +37,8 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     private ArrayList<Song> songs; //holds the list of songs to display
     private SongAdapter adapter;   //displays the songs
     private Menu menu;             //menu
+    private songSelector callback;
+
 
     // Empty constructor
     public MainFragment() {}
@@ -53,6 +56,22 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
 
         // get and display songs
         getSongs();
+    }
+
+    public interface songSelector {
+        void songSelected(Song song);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            callback = (songSelector) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() +
+                    " must implement songSelector");
+        }
     }
 
     @Override
@@ -335,6 +354,6 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     public void songClick(int position) {
         //dostuff;
         Song song = songs.get(position);
-        ((MainActivity) getActivity()).songSelected(song);
+        callback.songSelected(song);
     }
 }

@@ -2,10 +2,9 @@ package edu.uw.eduong.musaic;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 // Displays a list of music on your phone
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainFragment.songSelector {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // for song selector on song click
+    @Override
     public void songSelected(Song song) {
         PlayFragment play = new PlayFragment();
 
