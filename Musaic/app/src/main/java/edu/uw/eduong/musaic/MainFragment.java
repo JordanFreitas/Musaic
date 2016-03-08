@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -43,12 +41,8 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     public MainFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         songs = new ArrayList<>();
 
@@ -57,11 +51,19 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
                 getActivity(), R.layout.song_item, songs);
         adapter.setClick(this);
 
+        // get and display songs
+        getSongs();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
         //support ListView or GridView
         AdapterView listView = (AdapterView)rootView.findViewById(R.id.listView);
         listView.setAdapter(adapter);
-
-        getSongs();
 
         return rootView;
     }
@@ -220,7 +222,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
                 if (ContextCompat.checkSelfPermission(getContext(),
                         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     songDataTask getSongs = new songDataTask();
-                    getSongs.execute();
+                    getSongs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } else {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 255);
                 }
