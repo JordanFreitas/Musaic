@@ -69,7 +69,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
             public void onClick(View v) {
                 Log.v(TAG, "hi");
                 // swap the fragments
-                click.songClick(position);
+                click.songClick(song);
             }
         });
 
@@ -81,6 +81,6 @@ public class SongAdapter extends ArrayAdapter<Song> {
     }
 
     public interface SongAdapterClick {
-        void songClick(int position);
+        void songClick(Song song);
     }
 }

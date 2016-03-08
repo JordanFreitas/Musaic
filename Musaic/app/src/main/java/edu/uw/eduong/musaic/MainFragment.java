@@ -351,9 +351,8 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
 
     // when song item is clicked
     @Override
-    public void songClick(int position) {
+    public void songClick(Song song) {
         //dostuff;
-        Song song = songs.get(position);
-        callback.songSelected(song);
+        ((songSelector) getActivity()).songSelected(song);
     }
 }

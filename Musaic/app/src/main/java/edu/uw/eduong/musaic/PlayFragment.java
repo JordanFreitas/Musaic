@@ -2,6 +2,7 @@ package edu.uw.eduong.musaic;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class PlayFragment extends Fragment {
 
             // show the title
             if (bundle.getParcelable("song") != null) {
-                //??
+                Log.v("PLAYMUSIC", "YES");
             } else {
 
             }
