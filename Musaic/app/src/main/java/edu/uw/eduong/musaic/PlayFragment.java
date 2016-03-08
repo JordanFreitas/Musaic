@@ -56,6 +56,23 @@ public class PlayFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_play, container, false);
 
+        rightTime = (TextView) rootView.findViewById(R.id.rightTimeDisplay);
+        leftTime = (TextView) rootView.findViewById(R.id.leftTimeDisplay);
+        album = (TextView) rootView.findViewById(R.id.album);
+        artist = (TextView) rootView.findViewById(R.id.artist);
+        songTitle = (TextView) rootView.findViewById(R.id.songTitle);
+//        album.setText(Display Album Title);
+//        artist.setText(Display Artist Name);
+        //songTitle.setText(Displlay song Name);
+
+
+        seekBar = (SeekBar) rootView.findViewById(R.id.seek);
+        playlist = (Button) rootView.findViewById(R.id.playlist);
+        play = (Button) rootView.findViewById(R.id.pause);
+        next = (Button) rootView.findViewById(R.id.next);
+        back = (Button) rootView.findViewById(R.id.back);
+        shuffle = (Button) rootView.findViewById(R.id.shuffle);
+        repeat = (Button) rootView.findViewById(R.id.repeat);
         // Holds the songs
         songs = new ArrayList<>();
         Bundle bundle = getArguments();
@@ -78,28 +95,15 @@ public class PlayFragment extends Fragment {
 
         //resets player on create
         mediaPlayer = new MediaPlayer();
+        //seekBar.setOnSeekBarChangeListener();
+        //mediaPlayer.setOnCompletionListener((MediaPlayer.OnCompletionListener) this);
 //        if (mediaPlayer != null) {
 //            mediaPlayer.stop();
 //            mediaPlayer.release();
 //        }
 
-        rightTime = (TextView) rootView.findViewById(R.id.rightTimeDisplay);
-        leftTime = (TextView) rootView.findViewById(R.id.leftTimeDisplay);
-        album = (TextView) rootView.findViewById(R.id.album);
-        artist = (TextView) rootView.findViewById(R.id.artist);
-        songTitle = (TextView) rootView.findViewById(R.id.songTitle);
-//        album.setText(Display Album Title);
-//        artist.setText(Display Artist Name);
-        //songTitle.setText(Displlay song Name);
+        playSong(0);
 
-
-        seekBar = (SeekBar) rootView.findViewById(R.id.seek);
-        playlist = (Button) rootView.findViewById(R.id.playlist);
-        play = (Button) rootView.findViewById(R.id.pause);
-        next = (Button) rootView.findViewById(R.id.next);
-        back = (Button) rootView.findViewById(R.id.back);
-        shuffle = (Button) rootView.findViewById(R.id.shuffle);
-        repeat = (Button) rootView.findViewById(R.id.repeat);
 
 
 
@@ -122,14 +126,15 @@ public class PlayFragment extends Fragment {
                     if(mediaPlayer!=null){
                         mediaPlayer.pause();
                         // Changing button image to play button
-                        play.setBackgroundResource(R.drawable.play);
+                        //play.setBackgroundResource(R.drawable.play);
                     }
                 }else{
                     // Resume song
                     if(mediaPlayer!=null){
                         mediaPlayer.start();
+                        Log.wtf("Started", "Plz");
                         // Changing button image to pause button
-                        play.setBackgroundResource(R.drawable.pause);
+                        //play.setBackgroundResource(R.drawable.pause);
                     }
                 }
 
@@ -226,18 +231,19 @@ public class PlayFragment extends Fragment {
     public void  playSong(int songIndex){
         // Play song
         try {
+            Log.wtf("song", ""+songIndex);
             mediaPlayer.reset();
-            //mediaPlayer.setDataSource(songsList.get(songIndex).get("songPath"));
+            mediaPlayer.setDataSource(songs.get(songIndex).getPath());
             //ioException e
             //TODO: HANDLE EXCEPTION
             mediaPlayer.prepare();
             mediaPlayer.start();
             // Displaying Song title
-//            String song = songsList.get(songIndex).get("songTitle");
-//            songTitle.setText(song);
+            String song = songs.get(songIndex).getTitle();
+            songTitle.setText(song);
 
             // Changing Button Image to pause image
-            play.setBackgroundResource(R.drawable.pause);
+            //////play.setBackgroundResource(R.drawable.pause);
 
             // set Progress bar values
             seekBar.setProgress(0);
