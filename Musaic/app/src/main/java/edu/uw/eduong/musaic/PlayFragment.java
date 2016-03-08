@@ -2,6 +2,7 @@ package edu.uw.eduong.musaic;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class PlayFragment extends Fragment {
     //    private int seekForwardTime = 5000;
 //    private int seekBackwardTime = 5000;
     private Handler handler = new Handler();
-    private ArrayList<HashMap<String, String>> songsList;
+    private ArrayList<Song> songsList;
 
     //Thread mSeek;
     /**
@@ -80,11 +81,26 @@ public class PlayFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_play, container, false);
 
+        // Holds the songs
+        songsList = new ArrayList<>();
+        Bundle bundle = getArguments();
+
+        // get the songs
+        if (bundle != null) {
+            songsList = bundle.getParcelableArrayList("songs");
+            if (songsList != null) {
+                Log.v("PLAYMUSIC", "YES");
+            } else {
+                Log.v("PLAYMUSIC", "???");
+                songsList.isEmpty();
+            }
+        }
+
         position = 0;
         shuffleVal = false;
         repeatVal = false;
         seekHelper = new SeekHelper();
-        songsList = new ArrayList<HashMap<String, String>>();
+        songsList = new ArrayList<Song>();
         //resets player on create
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -179,12 +195,12 @@ public class PlayFragment extends Fragment {
             public void onClick(View v) {
                 if(shuffleVal){
                     shuffleVal = false;
-                    Toast.makeText(getContext(), "Shuffle is OFF", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Shuffle is OFF", Toast.LENGTH_SHORT).show();
                     shuffle.setBackgroundResource(R.drawable.shuffle);
                 }else{
                     // make repeat to true
                     shuffleVal= true;
-                    Toast.makeText(getContext(), "Shuffle is ON", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Shuffle is ON", Toast.LENGTH_SHORT).show();
                     // make shuffle to false
                     repeatVal = false;
                     shuffle.setBackgroundResource(R.drawable.son);
@@ -197,12 +213,12 @@ public class PlayFragment extends Fragment {
             public void onClick(View v) {
                 if(repeatVal){
                     repeatVal = false;
-                    Toast.makeText(getContext(), "Repeat is OFF", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Repeat is OFF", Toast.LENGTH_SHORT).show();
                     repeat.setBackgroundResource(R.drawable.repeat);
                 }else{
                     // make repeat to true
                     repeatVal = true;
-                    Toast.makeText(getContext(), "Repeat is ON", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Repeat is ON", Toast.LENGTH_SHORT).show();
                     // make shuffle to false
                     shuffleVal = false;
                     repeat.setBackgroundResource(R.drawable.ron);
@@ -234,21 +250,18 @@ public class PlayFragment extends Fragment {
 
     }
 
-    /**
-     * Function to play a song
-     * @param songIndex - index of song
-     * */
+    //plays the song
     public void  playSong(int songIndex){
         // Play song
         try {
             mediaPlayer.reset();
-            mediaPlayer.setDataSource(songsList.get(songIndex).get("songPath"));
+            //mediaPlayer.setDataSource(songsList.get(songIndex).get("songPath"));
             //ioException e
             mediaPlayer.prepare();
             mediaPlayer.start();
             // Displaying Song title
-            String song = songsList.get(songIndex).get("songTitle");
-            songTitle.setText(song);
+//            String song = songsList.get(songIndex).get("songTitle");
+//            songTitle.setText(song);
 
             // Changing Button Image to pause image
             play.setBackgroundResource(R.drawable.pause);

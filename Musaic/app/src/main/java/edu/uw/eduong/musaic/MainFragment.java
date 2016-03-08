@@ -234,6 +234,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         return inSampleSize;
     }
 
+
     // Get list of songs on device
     public void getSongs() {
         if (isExternalStorageReadable()) {
