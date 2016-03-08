@@ -46,7 +46,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
         ImageView imageView = (ImageView) view.findViewById(R.id.songArt);
         imageView.setImageBitmap(song.getAlbumArt());
 
-        // TO FIX
+        // TODO: TO FIX ADDITIONAL OPTIONS FOR ITEMS
         PopupMenu popup = new PopupMenu(getContext(), view);
         popup.getMenuInflater().inflate(R.menu.menu_song, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -69,7 +69,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
             public void onClick(View v) {
                 Log.v(TAG, "hi");
                 // swap the fragments
-                click.songClick(song);
+                click.songClick(position);
             }
         });
 
@@ -81,6 +81,6 @@ public class SongAdapter extends ArrayAdapter<Song> {
     }
 
     public interface SongAdapterClick {
-        void songClick(Song song);
+        void songClick(int position);
     }
 }
