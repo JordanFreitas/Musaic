@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements GetSongsFragment.displayer, MainFragment.songSelector {
     private ArrayList<Song> songs; //holds the list of songs
     private static final String GET_SONGS_FRAGMENT = "get_songs";
+    private static final String SONGS_LIST = "songs_list"; //Songs list tag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         songs = list;
         MainFragment main = new MainFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("songs", songs);
+        bundle.putParcelableArrayList(SONGS_LIST, songs);
         main.setArguments(bundle);
         
         if (findViewById(R.id.container) == null) {
@@ -51,12 +52,12 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
     public void songSelected(int position) {
         PlayFragment play = new PlayFragment();
         Bundle bundlePlay = new Bundle();
-        bundlePlay.putParcelableArrayList("songs", songs);
+        bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
         play.setArguments(bundlePlay);
 
         MainFragment main = new MainFragment();
         Bundle bundleMain = new Bundle();
-        bundleMain.putParcelableArrayList("songs", songs);
+        bundleMain.putParcelableArrayList(SONGS_LIST, songs);
         main.setArguments(bundleMain);
 
         // Show Main List and Play if dual view, else just the play

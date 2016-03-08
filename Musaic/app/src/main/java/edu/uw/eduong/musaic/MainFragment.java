@@ -20,8 +20,8 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     private ArrayList<Song> songs; //holds the list of songs to display
     private SongAdapter adapter;   //displays the songs
     private Menu menu;             //menu
+    private static final String SONGS_LIST = "songs_list";  //Songs list tag
     private songSelector callback;
-
 
     // Empty constructor
     public MainFragment() {}
@@ -36,7 +36,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
 
         // get the songs
         if (bundle != null) {
-            songs = bundle.getParcelableArrayList("songs");
+            songs = bundle.getParcelableArrayList(SONGS_LIST);
             if (songs != null) {
                 Log.v("PLAYMUSIC", "YES");
             } else {
