@@ -77,10 +77,11 @@ public class PlayFragment extends Fragment {
         seekHelper = new SeekHelper();
 
         //resets player on create
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-        }
+        mediaPlayer = new MediaPlayer();
+//        if (mediaPlayer != null) {
+//            mediaPlayer.stop();
+//            mediaPlayer.release();
+//        }
 
         rightTime = (TextView) rootView.findViewById(R.id.rightTimeDisplay);
         leftTime = (TextView) rootView.findViewById(R.id.leftTimeDisplay);
@@ -116,20 +117,21 @@ public class PlayFragment extends Fragment {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mediaPlayer.isPlaying()){
-                    if(mediaPlayer!=null){
-                        mediaPlayer.pause();
-                        // Changing button image to play button
-                        play.setBackgroundResource(R.drawable.play);
-                    }
-                }else{
-                    // Resume song
-                    if(mediaPlayer!=null){
-                        mediaPlayer.start();
-                        // Changing button image to pause button
-                        play.setBackgroundResource(R.drawable.pause);
-                    }
-                }
+                mediaPlayer.start();
+//                if(mediaPlayer.isPlaying()){
+//                    if(mediaPlayer!=null){
+//                        mediaPlayer.pause();
+//                        // Changing button image to play button
+//                        play.setBackgroundResource(R.drawable.play);
+//                    }
+//                }else{
+//                    // Resume song
+//                    if(mediaPlayer!=null){
+//                        mediaPlayer.start();
+//                        // Changing button image to pause button
+//                        play.setBackgroundResource(R.drawable.pause);
+//                    }
+//                }
 
             }
         });
@@ -217,7 +219,6 @@ public class PlayFragment extends Fragment {
             // play selected song
             playSong(position);
         }
-
     }
 
     //plays the song
@@ -227,6 +228,7 @@ public class PlayFragment extends Fragment {
             mediaPlayer.reset();
             //mediaPlayer.setDataSource(songsList.get(songIndex).get("songPath"));
             //ioException e
+            //TODO: HANDLE EXCEPTION
             mediaPlayer.prepare();
             mediaPlayer.start();
             // Displaying Song title
@@ -243,10 +245,6 @@ public class PlayFragment extends Fragment {
             // Updating progress bar
             updateProgressBar();
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
