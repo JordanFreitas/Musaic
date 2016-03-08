@@ -2,6 +2,7 @@ package edu.uw.eduong.musaic;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 // Displays a list of music on your phone
 public class MainActivity extends AppCompatActivity {

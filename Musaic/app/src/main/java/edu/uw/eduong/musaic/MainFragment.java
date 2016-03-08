@@ -44,17 +44,6 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Retain this fragment across configuration changes.
-        setRetainInstance(true);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
         songs = new ArrayList<>();
 
         // controller
@@ -62,12 +51,19 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
                 getActivity(), R.layout.song_item, songs);
         adapter.setClick(this);
 
+        // get and display songs
+        getSongs();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
         //support ListView or GridView
         AdapterView listView = (AdapterView)rootView.findViewById(R.id.listView);
         listView.setAdapter(adapter);
-
-        // get and display songs
-        getSongs();
 
         return rootView;
     }
