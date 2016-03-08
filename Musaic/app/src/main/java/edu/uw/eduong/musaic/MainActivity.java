@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
 
         // run the fragment to retrieve the songs
         GetSongsFragment getSongs = (GetSongsFragment) getFragmentManager().findFragmentByTag(GET_SONGS_FRAGMENT);
-        if (getSongs == null && songs.isEmpty()) {
+        if (getSongs == null || songs == null) {
             getSongs = new GetSongsFragment();
             getFragmentManager().beginTransaction()
                     .add(getSongs, GET_SONGS_FRAGMENT)
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         super.onConfigurationChanged(newConfig);
         // run the fragment to retrieve the songs
         GetSongsFragment getSongs = (GetSongsFragment) getFragmentManager().findFragmentByTag(GET_SONGS_FRAGMENT);
-        if (getSongs == null && songs.isEmpty()) {
+        if (getSongs == null || songs == null) {
             getSongs = new GetSongsFragment();
             getFragmentManager().beginTransaction()
                     .add(getSongs, GET_SONGS_FRAGMENT)
