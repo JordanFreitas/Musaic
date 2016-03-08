@@ -219,6 +219,7 @@ public class PlayFragment extends Fragment {
             // play selected song
             playSong(position);
         }
+
     }
 
     //plays the song

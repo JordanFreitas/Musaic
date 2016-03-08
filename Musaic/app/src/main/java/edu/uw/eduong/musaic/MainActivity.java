@@ -1,5 +1,6 @@
 package edu.uw.eduong.musaic;
 
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
 
         // run the fragment to retrieve the songs
         GetSongsFragment getSongs = (GetSongsFragment) getFragmentManager().findFragmentByTag(GET_SONGS_FRAGMENT);
-        if (getSongs == null) {
+        if (getSongs == null && songs.isEmpty()) {
             getSongs = new GetSongsFragment();
             getFragmentManager().beginTransaction()
                     .add(getSongs, GET_SONGS_FRAGMENT)
@@ -82,6 +83,21 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // run the fragment to retrieve the songs
+        GetSongsFragment getSongs = (GetSongsFragment) getFragmentManager().findFragmentByTag(GET_SONGS_FRAGMENT);
+        if (getSongs == null && songs.isEmpty()) {
+            getSongs = new GetSongsFragment();
+            getFragmentManager().beginTransaction()
+                    .add(getSongs, GET_SONGS_FRAGMENT)
+                    .commit();
+        } else {
+            displaySongs(songs);
         }
     }
 }
