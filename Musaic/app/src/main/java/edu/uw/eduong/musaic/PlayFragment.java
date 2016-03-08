@@ -117,21 +117,21 @@ public class PlayFragment extends Fragment {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaPlayer.start();
-//                if(mediaPlayer.isPlaying()){
-//                    if(mediaPlayer!=null){
-//                        mediaPlayer.pause();
-//                        // Changing button image to play button
-//                        play.setBackgroundResource(R.drawable.play);
-//                    }
-//                }else{
-//                    // Resume song
-//                    if(mediaPlayer!=null){
-//                        mediaPlayer.start();
-//                        // Changing button image to pause button
-//                        play.setBackgroundResource(R.drawable.pause);
-//                    }
-//                }
+                //mediaPlayer.start();
+                if(mediaPlayer.isPlaying()){
+                    if(mediaPlayer!=null){
+                        mediaPlayer.pause();
+                        // Changing button image to play button
+                        play.setBackgroundResource(R.drawable.play);
+                    }
+                }else{
+                    // Resume song
+                    if(mediaPlayer!=null){
+                        mediaPlayer.start();
+                        // Changing button image to pause button
+                        play.setBackgroundResource(R.drawable.pause);
+                    }
+                }
 
             }
         });
@@ -246,6 +246,8 @@ public class PlayFragment extends Fragment {
             // Updating progress bar
             updateProgressBar();
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
