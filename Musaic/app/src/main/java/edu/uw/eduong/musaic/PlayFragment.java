@@ -82,23 +82,23 @@ public class PlayFragment extends Fragment {
             mediaPlayer.release();
         }
 
-        rightTime = (TextView) getView().findViewById(R.id.rightTimeDisplay);
-        leftTime = (TextView) getView().findViewById(R.id.leftTimeDisplay);
-        album = (TextView) getView().findViewById(R.id.album);
-        artist = (TextView) getView().findViewById(R.id.artist);
-        songTitle = (TextView) getView().findViewById(R.id.songTitle);
+        rightTime = (TextView) rootView.findViewById(R.id.rightTimeDisplay);
+        leftTime = (TextView) rootView.findViewById(R.id.leftTimeDisplay);
+        album = (TextView) rootView.findViewById(R.id.album);
+        artist = (TextView) rootView.findViewById(R.id.artist);
+        songTitle = (TextView) rootView.findViewById(R.id.songTitle);
 //        album.setText(Display Album Title);
 //        artist.setText(Display Artist Name);
         //songTitle.setText(Displlay song Name);
 
 
-        seekBar = (SeekBar) getView().findViewById(R.id.seek);
-        playlist = (Button) getView().findViewById(R.id.playlist);
-        play = (Button) getView().findViewById(R.id.pause);
-        next = (Button) getView().findViewById(R.id.next);
-        back = (Button) getView().findViewById(R.id.back);
-        shuffle = (Button) getView().findViewById(R.id.shuffle);
-        repeat = (Button) getView().findViewById(R.id.repeat);
+        seekBar = (SeekBar) rootView.findViewById(R.id.seek);
+        playlist = (Button) rootView.findViewById(R.id.playlist);
+        play = (Button) rootView.findViewById(R.id.pause);
+        next = (Button) rootView.findViewById(R.id.next);
+        back = (Button) rootView.findViewById(R.id.back);
+        shuffle = (Button) rootView.findViewById(R.id.shuffle);
+        repeat = (Button) rootView.findViewById(R.id.repeat);
 
 
 
