@@ -10,7 +10,7 @@
     <!-- song artwork -->
     <ImageView
         android:id="@+id/songArt"
-        android:layout_width="100dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:layout_margin="10dp"
@@ -21,7 +21,7 @@
         android:id="@+id/songTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="15sp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         />

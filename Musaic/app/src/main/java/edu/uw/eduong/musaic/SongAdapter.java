@@ -46,7 +46,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
         ImageView imageView = (ImageView) view.findViewById(R.id.songArt);
         imageView.setImageBitmap(song.getAlbumArt());
 
-        // TO FIX
+        // TODO: TO FIX ADDITIONAL OPTIONS FOR ITEMS
         PopupMenu popup = new PopupMenu(getContext(), view);
         popup.getMenuInflater().inflate(R.menu.menu_song, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

@@ -3,42 +3,68 @@ package edu.uw.eduong.musaic;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 // Displays a list of music on your phone
-public class MainActivity extends AppCompatActivity implements MainFragment.songSelector {
+public class MainActivity extends AppCompatActivity implements GetSongsFragment.displayer, MainFragment.songSelector {
+    private ArrayList<Song> songs; //holds the list of songs
+    private static final String GET_SONGS_FRAGMENT = "get_songs";
+    private static final String SONGS_LIST = "songs_list"; //Songs list tag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (findViewById(R.id.container) == null) {
+        // run the fragment to retrieve the songs
+        GetSongsFragment getSongs = (GetSongsFragment) getFragmentManager().findFragmentByTag(GET_SONGS_FRAGMENT);
+        if (getSongs == null) {
+            getSongs = new GetSongsFragment();
             getFragmentManager().beginTransaction()
-                    .add(R.id.pane_left, new MainFragment(), "main")
-                    .add(R.id.pane_right, new PlayFragment())
-                    .commit();
-        } else {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MainFragment(), "main")
+                    .add(getSongs, GET_SONGS_FRAGMENT)
                     .commit();
         }
     }
 
-    // for song selector on song click
     @Override
-    public void songSelected(Song song) {
-        PlayFragment play = new PlayFragment();
-
-        // data song to a bundle
+    public void displaySongs(ArrayList<Song> list) {
+        songs = list;
+        MainFragment main = new MainFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("song", song);
+        bundle.putParcelableArrayList(SONGS_LIST, songs);
+        main.setArguments(bundle);
+        
+        if (findViewById(R.id.container) == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.pane_left, main)
+                    .add(R.id.pane_right, new PlayFragment())
+                    .commit();
+        } else {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, main)
+                    .commit();
+        }
 
-        play.setArguments(bundle);
+    }
+
+    // for song selector on song click, play the song
+    @Override
+    public void songSelected(int position) {
+        PlayFragment play = new PlayFragment();
+        Bundle bundlePlay = new Bundle();
+        bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
+        play.setArguments(bundlePlay);
+
+        MainFragment main = new MainFragment();
+        Bundle bundleMain = new Bundle();
+        bundleMain.putParcelableArrayList(SONGS_LIST, songs);
+        main.setArguments(bundleMain);
 
         // Show Main List and Play if dual view, else just the play
         if (findViewById(R.id.container) == null) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.pane_left, play)
-                    .replace(R.id.pane_right, new MainFragment(), "main")
+                    .replace(R.id.pane_right, main)
                     .addToBackStack(null)
                     .commit();
         } else {

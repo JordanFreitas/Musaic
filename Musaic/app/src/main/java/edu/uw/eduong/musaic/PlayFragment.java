@@ -26,35 +26,12 @@ import java.util.Random;
 
 
 
+import java.util.ArrayList;
+
 /**
  * Currently playing screen. Gives access to additional info
  */
 public class PlayFragment extends Fragment {
-
-    //Empty constructor
-    public PlayFragment() {}
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        View rootView = inflater.inflate(R.layout.fragment_play, container, false);
-//
-//        // Holds the song
-//        if (savedInstanceState != null) {
-//            Bundle bundle = getArguments();
-//
-//            // show the title
-//            if (bundle.getParcelable("song") != null) {
-//                //??
-//            } else {
-//
-//            }
-//        }
-//
-//        return rootView;
-//    }
-
     SeekHelper seekHelper;
     MediaPlayer mediaPlayer;
     SeekBar seekBar;
@@ -66,15 +43,13 @@ public class PlayFragment extends Fragment {
     //    private int seekForwardTime = 5000;
 //    private int seekBackwardTime = 5000;
     private Handler handler = new Handler();
-    private ArrayList<Song> songsList;
+    private static final String SONGS_LIST = "songs_list";  //Songs list tag
+    private ArrayList<Song> songs;
+
+    //Empty constructor
+    public PlayFragment() {}
 
     //Thread mSeek;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-
-
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,17 +57,17 @@ public class PlayFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_play, container, false);
 
         // Holds the songs
-        songsList = new ArrayList<>();
+        songs = new ArrayList<>();
         Bundle bundle = getArguments();
 
         // get the songs
         if (bundle != null) {
-            songsList = bundle.getParcelableArrayList("songs");
-            if (songsList != null) {
+            songs = bundle.getParcelableArrayList(SONGS_LIST);
+            if (songs != null) {
                 Log.v("PLAYMUSIC", "YES");
             } else {
                 Log.v("PLAYMUSIC", "???");
-                songsList.isEmpty();
+                songs.clear();
             }
         }
 
@@ -100,15 +75,12 @@ public class PlayFragment extends Fragment {
         shuffleVal = false;
         repeatVal = false;
         seekHelper = new SeekHelper();
-        songsList = new ArrayList<Song>();
+
         //resets player on create
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
         }
-        ///need to get the list of songs on the SD card
-//        mediaPlayer = MediaPlayer.create(getApplicationContext(), (uri from the string position of the songs))
-//        mediaPlayer.start();
 
         rightTime = (TextView) getView().findViewById(R.id.rightTimeDisplay);
         leftTime = (TextView) getView().findViewById(R.id.leftTimeDisplay);
@@ -141,8 +113,6 @@ public class PlayFragment extends Fragment {
 //                    .decodeByteArray(art, 0, art.length);
 
 
-
-
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +137,7 @@ public class PlayFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // check if next song is there or not
-                if(position < (songsList.size() - 1)){
+                if(position < (songs.size() - 1)){
                     playSong(position + 1);
                     position ++;
                 }else{
@@ -185,8 +155,8 @@ public class PlayFragment extends Fragment {
                     position --;
                 }else{
                     // play last song
-                    playSong(songsList.size() - 1);
-                    position = songsList.size() - 1;
+                    playSong(songs.size() - 1);
+                    position = songs.size() - 1;
                 }
             }
         });
@@ -355,11 +325,11 @@ public class PlayFragment extends Fragment {
         } else if(shuffleVal){
             // shuffle is on - play a random song
             Random r = new Random();
-            position = r.nextInt((songsList.size() - 1) + 1);
+            position = r.nextInt((songs.size() - 1) + 1);
             playSong(position);
         } else{
             // no repeat or shuffle ON - play next song
-            if(position < (songsList.size() - 1)){
+            if(position < (songs.size() - 1)){
                 playSong(position + 1);
                 position ++;
             }else {
