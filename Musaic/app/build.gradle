@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'MUSIXMATCH_API_KEY', '"4b8611ed26474559b1c11678d322f77f"'
+    }
 }
 
 dependencies {
