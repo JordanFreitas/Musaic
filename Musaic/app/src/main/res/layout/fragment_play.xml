@@ -14,9 +14,12 @@
 
     <SeekBar
         android:id="@+id/seek"
-        android:layout_below="@+id/back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:padding="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/wiki"
+        android:layout_alignEnd="@+id/wiki" />
     <!--<Button-->
     <!--android:id="@+id/play"-->
     <!--android:layout_below="@+id/albumArt"-->
@@ -24,44 +27,45 @@
     <!--android:layout_height="wrap_content" />-->
     <Button
         android:id="@+id/pause"
-        android:layout_below="@+id/albumArt"
-        android:layout_toRightOf="@+id/back"
-        android:layout_toEndOf="@+id/back"
         android:text="||"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/seek"
+        android:layout_centerHorizontal="true" />
     <Button
         android:id="@+id/next"
-        android:layout_below="@+id/albumArt"
-        android:layout_toRightOf="@+id/pause"
-        android:layout_toEndOf="@+id/pause"
         android:text=">"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="75sp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/seek"
+        android:layout_toRightOf="@+id/pause"
+        android:layout_toEndOf="@+id/pause" />
     <Button
         android:id="@+id/back"
-        android:layout_below="@+id/albumArt"
-        android:layout_toRightOf="@+id/repeat"
-        android:layout_toEndOf="@+id/repeat"
-        android:text="hi"
-        android:layout_width="50sp"
-        android:layout_height="wrap_content" />
+        android:text="<"
+        android:layout_width="75sp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/seek"
+        android:layout_toLeftOf="@+id/pause"
+        android:layout_toStartOf="@+id/pause" />
     <Button
         android:id="@+id/playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
         android:id="@+id/shuffle"
-        android:layout_below="@+id/albumArt"
-        android:layout_toRightOf="@+id/next"
-        android:layout_toEndOf="@+id/next"
         android:layout_width="50sp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/next"
+        android:layout_toRightOf="@+id/next"
+        android:layout_toEndOf="@+id/next" />
     <Button
         android:id="@+id/repeat"
-        android:layout_below="@+id/albumArt"
         android:layout_width="50sp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/back"
+        android:layout_toLeftOf="@+id/back"
+        android:layout_toStartOf="@+id/back" />
     <Button
         android:id="@+id/lyrics"
         android:layout_toRightOf="@+id/album"
@@ -78,7 +82,8 @@
         android:id="@+id/albumArt"
         android:layout_below="@+id/songTitle"
         android:layout_width="400sp"
-        android:layout_height="300sp" />
+        android:layout_height="300sp"
+        android:layout_above="@+id/pause" />
     <TextView
         android:id="@+id/album"
         android:layout_toRightOf="@+id/artist"
@@ -96,12 +101,22 @@
         android:layout_height="50sp" />
     <TextView
         android:id="@+id/leftTimeDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:paddingTop="20sp"
+        android:textSize="12.5sp"
+        android:layout_width="25sp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/seek"
+        android:layout_toLeftOf="@+id/seek"
+        android:layout_toStartOf="@+id/seek" />
     <TextView
         android:id="@+id/rightTimeDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:paddingTop="20sp"
+        android:textSize="12.5sp"
+        android:layout_width="25sp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/seek"
+        android:layout_toRightOf="@+id/seek"
+        android:layout_toEndOf="@+id/seek" />
 
 
 </RelativeLayout>
