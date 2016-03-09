@@ -60,7 +60,7 @@ public class InfoFragment extends Fragment {
             try {
                 Uri.Builder builder = new Uri.Builder();
                 builder.scheme("http") //Forms the url one segment at a time
-                        .authority("http://api.musixmatch.com/ws/1.1/track.search")
+                        .authority("api.musixmatch.com/ws/1.1/track.search")
                         .appendQueryParameter("q_track", BuildConfig.MUSIXMATCH_API_KEY)
                         .appendQueryParameter("q_artist", BuildConfig.MUSIXMATCH_API_KEY)
                         .appendQueryParameter("q_has_lyrics", "1")
@@ -140,7 +140,58 @@ public class InfoFragment extends Fragment {
                     }
                 }
 
-                // TODO: get the track shit
+                // gets the lyrics
+                String urlString2 = "";
+                try {
+                    Uri.Builder builder = new Uri.Builder();
+                    builder.scheme("http") //Forms the url one segment at a time
+                            .authority("api.musixmatch.com/ws/1.1/track.lyrics.get")
+                            .appendQueryParameter("track_id", trackID)
+                            .appendQueryParameter("apikey", BuildConfig.MUSIXMATCH_API_KEY);
+                    urlString2 = builder.build().toString();
+                } catch (Exception e) {
+                    return null;
+                }
+
+                //HttpURLConnection urlConnection = null;
+               reader = null;
+
+                //String results = null;
+
+                try {
+                    URL url = new URL(urlString);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.connect();
+
+                    InputStream inputStream = urlConnection.getInputStream();
+                    if (inputStream == null) {
+                        return null;
+                    }
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder builder = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        builder.append(line);
+                    }
+                    if (builder.length() == 0) {
+                        return null;
+                    }
+                    results = builder.toString();
+                } catch (IOException e) {
+                    return null;
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (final IOException e) {
+                        }
+                    }
+                }
             }
 
             return results;
@@ -148,11 +199,27 @@ public class InfoFragment extends Fragment {
 
         // Occurs after API calls, sends the track id
         protected void onPostExecute(String results){
-            if (results == null) {
+            if(results.contains("\"body\":[]}}")) {
+                TextView t = (TextView) getView().findViewById(R.id.textView); //if song not in database
+                t.setText("Sorry, this song's lyrics are unavailable at this time.");
+            } else {
+                adapter.clear();
+                JSONArray songBody = null; // list that will contain all song info
+                JSONArray songLyrics = null;
+                JSONArray songLyricsBody = null;
 
+                // get string as json
+                try {
+                    JSONObject jsonObject = new JSONObject(results);
+                    songBody = jsonObject.getJSONArray("body");
+                    songLyrics = songBody.getJSONArray(0);
+                    songLyricsBody = songLyrics.getJSONArray(6); // location of lyrics in JSONArray
+                    TextView t = (TextView) getView().findViewById(R.id.textView);
+                    t.setText(songLyricsBody.toString());
+                } catch (JSONException e) {
+                    Log.v(TAG, "JSON exception", e);
+                }
             }
         }
-
-
     }
 }
