@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 /**
  * Currently playing screen. Gives access to additional info
  */
-public class PlayFragment extends Fragment {
+public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener {
     SeekHelper seekHelper;
     MediaPlayer mediaPlayer;
     SeekBar seekBar;
@@ -39,6 +40,7 @@ public class PlayFragment extends Fragment {
     boolean repeatVal;
     Button play, next, back, shuffle, repeat, playlist;
     TextView album, artist, songTitle, rightTime, leftTime;
+    ImageView albumArt;
     int position;
     //    private int seekForwardTime = 5000;
 //    private int seekBackwardTime = 5000;
@@ -61,8 +63,9 @@ public class PlayFragment extends Fragment {
         album = (TextView) rootView.findViewById(R.id.album);
         artist = (TextView) rootView.findViewById(R.id.artist);
         songTitle = (TextView) rootView.findViewById(R.id.songTitle);
+        albumArt = (ImageView) rootView.findViewById(R.id.albumArt);
 //        album.setText(Display Album Title);
-//        artist.setText(Display Artist Name);
+//
         //songTitle.setText(Displlay song Name);
 
 
@@ -95,8 +98,8 @@ public class PlayFragment extends Fragment {
 
         //resets player on create
         mediaPlayer = new MediaPlayer();
-        //seekBar.setOnSeekBarChangeListener();
-        //mediaPlayer.setOnCompletionListener((MediaPlayer.OnCompletionListener) this);
+        seekBar.setOnSeekBarChangeListener(this);
+        mediaPlayer.setOnCompletionListener(this);
 //        if (mediaPlayer != null) {
 //            mediaPlayer.stop();
 //            mediaPlayer.release();
@@ -105,17 +108,6 @@ public class PlayFragment extends Fragment {
         playSong(0);
 
 
-
-
-//        MediaMetadataRetriever metaRetriver;
-//        byte[] art;
-//
-//        metaRetriver = new MediaMetadataRetriever();
-//        metaRetriver.setDataSource(songsList.get(songIndex).get("songPath"));
-//        try {
-//            art = metaRetriver.getEmbeddedPicture();
-//            Bitmap songImage = BitmapFactory
-//                    .decodeByteArray(art, 0, art.length);
 
 
         play.setOnClickListener(new View.OnClickListener() {
@@ -241,7 +233,8 @@ public class PlayFragment extends Fragment {
             // Displaying Song title
             String song = songs.get(songIndex).getTitle();
             songTitle.setText(song);
-
+            albumArt.setImageBitmap(songs.get(songIndex).getAlbumArt());
+            artist.setText(songs.get(songIndex).getArtist());
             // Changing Button Image to pause image
             //////play.setBackgroundResource(R.drawable.pause);
 
