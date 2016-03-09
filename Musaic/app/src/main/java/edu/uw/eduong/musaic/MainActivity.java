@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
     private ArrayList<Song> songs; //holds the list of songs
     private static final String GET_SONGS_FRAGMENT = "get_songs";
     private static final String SONGS_LIST = "songs_list"; //Songs list tag
+    private static final String POSITION = "position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         PlayFragment play = new PlayFragment();
         Bundle bundlePlay = new Bundle();
         bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
+        bundlePlay.putInt(POSITION, position);
         play.setArguments(bundlePlay);
 
         MainFragment main = new MainFragment();

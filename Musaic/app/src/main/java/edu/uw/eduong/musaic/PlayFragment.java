@@ -41,11 +41,12 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     Button play, next, back, shuffle, repeat, playlist;
     TextView album, artist, songTitle, rightTime, leftTime;
     ImageView albumArt;
-    int position;
+    int position, randPosition;
     //    private int seekForwardTime = 5000;
 //    private int seekBackwardTime = 5000;
     private Handler handler = new Handler();
     private static final String SONGS_LIST = "songs_list";  //Songs list tag
+    private static final String POSITION = "position";
     private ArrayList<Song> songs;
 
     //Empty constructor
@@ -105,7 +106,8 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 //            mediaPlayer.release();
 //        }
 
-        playSong(0);
+
+        playSong(bundle.getInt(POSITION));
 
 
 
@@ -136,7 +138,17 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             @Override
             public void onClick(View v) {
                 // check if next song is there or not
-                if(position < (songs.size() - 1)){
+                if(shuffleVal) {
+                    // shuffle is on - play a random song
+                    Random r = new Random();
+                    randPosition = r.nextInt((songs.size() - 1) + 1);
+                    playSong(randPosition);
+                }
+                //plays same song
+                else if(repeatVal){
+                    playSong(position);
+                }
+                else if(position < (songs.size() - 1)){
                     playSong(position + 1);
                     position ++;
                 }else{
