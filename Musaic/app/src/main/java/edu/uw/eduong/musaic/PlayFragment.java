@@ -52,8 +52,9 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     //Empty constructor
     public PlayFragment() {}
 
-    //Thread mSeek;
-
+    public interface songInfo {
+        void getSongInfo(int position);
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,7 +70,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 //
         //songTitle.setText(Displlay song Name);
 
-
         seekBar = (SeekBar) rootView.findViewById(R.id.seek);
         playlist = (Button) rootView.findViewById(R.id.playlist);
         play = (Button) rootView.findViewById(R.id.pause);
@@ -77,26 +77,11 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         back = (Button) rootView.findViewById(R.id.back);
         shuffle = (Button) rootView.findViewById(R.id.shuffle);
         repeat = (Button) rootView.findViewById(R.id.repeat);
-        // Holds the songs
-        songs = new ArrayList<>();
-        Bundle bundle = getArguments();
-
-        // get the songs
-        if (bundle != null) {
-            songs = bundle.getParcelableArrayList(SONGS_LIST);
-            if (songs != null) {
-                Log.v("PLAYMUSIC", "YES");
-            } else {
-                Log.v("PLAYMUSIC", "???");
-                songs.clear();
-            }
-        }
 
         position = 0;
         shuffleVal = false;
         repeatVal = false;
         seekHelper = new SeekHelper();
-
 
         //resets player on create
         mediaPlayer = new MediaPlayer();
@@ -104,11 +89,20 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         seekBar.setOnSeekBarChangeListener(this);
         mediaPlayer.setOnCompletionListener(this);
 
-        if(bundle!=null) {
+        // Holds the songs
+        songs = new ArrayList<>();
+        Bundle bundle = getArguments();
+
+        // get the songs
+        if (bundle != null) {
+            songs = bundle.getParcelableArrayList(SONGS_LIST);
+            if (songs == null) {
+                songs.clear();
+            }
+
             position = bundle.getInt(POSITION);
             playSong(position);
         }
-
 
 
         play.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +207,14 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 //            startActivityForResult(i, 100);
 //        }
 //    });
+        Button lyrics = (Button) rootView.findViewById(R.id.lyrics);
+        lyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((songInfo) getActivity()).getSongInfo(position);
+            }
+        });
+
         return rootView;
     }
     /**
@@ -308,7 +310,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     }
 
     /**
-     * When user stops moving the progress hanlder
+     * When user stops moving the progress handler
      * */
     public void onStopTrackingTouch(SeekBar seekBar) {
         handler.removeCallbacks(mUpdateTimeTask);
@@ -353,7 +355,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 
     @Override
     public void onDestroy(){
-
         super.onDestroy();
         mediaPlayer.release();
         handler.removeCallbacks(mUpdateTimeTask);

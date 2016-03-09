@@ -34,7 +34,7 @@
         android:layout_centerHorizontal="true" />
     <Button
         android:id="@+id/next"
-        android:text=">"
+        android:text="left"
         android:layout_width="75sp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/seek"
@@ -42,7 +42,7 @@
         android:layout_toEndOf="@+id/pause" />
     <Button
         android:id="@+id/back"
-        android:text="<"
+        android:text="left"
         android:layout_width="75sp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/seek"

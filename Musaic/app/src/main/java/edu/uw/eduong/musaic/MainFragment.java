@@ -26,6 +26,10 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     // Empty constructor
     public MainFragment() {}
 
+    public interface songSelector {
+        void songSelected(int position);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +53,6 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         adapter = new SongAdapter(
                 getActivity(), R.layout.song_item, songs);
         adapter.setClick(this);
-    }
-
-    public interface songSelector {
-        void songSelected(int position);
     }
 
     @Override
