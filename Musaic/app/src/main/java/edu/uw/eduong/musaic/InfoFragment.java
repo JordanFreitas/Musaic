@@ -72,7 +72,10 @@ public class InfoFragment extends Fragment {
             try {
                 Uri.Builder builder = new Uri.Builder();
                 builder.scheme("http") //Forms the url one segment at a time
-                        .authority("api.musixmatch.com/ws/1.1/track.search")
+                        .authority("api.musixmatch.com")
+                        .appendPath("ws")
+                        .appendPath("1.1")
+                        .appendPath("track.search")
                         .appendQueryParameter("q_track", song.getTitle())
                         .appendQueryParameter("q_artist", song.getArtist())
                         .appendQueryParameter("f_has_lyrics", "1")
@@ -91,27 +94,20 @@ public class InfoFragment extends Fragment {
                 URL url = new URL(urlString);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-                Log.v("WTF", "WHT4");
 
                 urlConnection.connect();
 
-                Log.v("WTF", "I q.q");
 
                 InputStream inputStream = urlConnection.getInputStream();
                 if (inputStream == null) {
-                    Log.v("WTF", "I q.q0");
-
                     return null;
                 }
-                Log.v("WTF", "I q.2");
 
                 reader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder builder = new StringBuilder();
                 String line;
 
                 while ((line = reader.readLine()) != null) {
-                    Log.v("WTF", "I q.q 4");
-
                     builder.append(line);
                 }
 
@@ -122,10 +118,7 @@ public class InfoFragment extends Fragment {
                 }
 
                 results = builder.toString();
-                Log.v("WTF", results);
-
             } catch (IOException e) {
-                Log.v("fuck", "WHYY " + e.toString());
                 return null;
             } finally {
                 if (urlConnection != null) {
@@ -142,25 +135,29 @@ public class InfoFragment extends Fragment {
 
 
             // song track id and get lyrics
-            String track_id = null;
+            int track_id = -1;
             try {
                 JSONObject jsonObject = new JSONObject(results);
-                JSONArray message = jsonObject.getJSONArray("message");
-                JSONArray body = message.getJSONArray(1);
-                JSONArray track_list = body.getJSONArray(0);
-                track_id = track_list.getString(0); // location of lyrics in JSONArray
+                JSONObject body = jsonObject.getJSONObject("message").getJSONObject("body");
+                JSONArray track_list = body.getJSONArray("track_list");
+                JSONObject tracks = track_list.getJSONObject(0);
+                JSONObject track = tracks.getJSONObject("track");
+                track_id = track.getInt("track_id"); // location of track id in JSONArray
 
             } catch (JSONException e) {
                 Log.v(TAG, "JSON exception", e);
             }
-            if (track_id != null) {
+            if (track_id != -1) {
                 // gets the lyrics
                 String urlString2 = "";
                 try {
                     Uri.Builder builder = new Uri.Builder();
                     builder.scheme("http") //Forms the url one segment at a time
-                            .authority("api.musixmatch.com/ws/1.1/track.lyrics.get")
-                            .appendQueryParameter("track_id", track_id)
+                            .authority("api.musixmatch.com")
+                            .appendPath("ws")
+                            .appendPath("1.1")
+                            .appendPath("track.lyrics.get")
+                            .appendQueryParameter("track_id", Integer.toString(track_id))
                             .appendQueryParameter("apikey", BuildConfig.MUSIXMATCH_API_KEY);
                     urlString2 = builder.build().toString();
                 } catch (Exception e) {
@@ -207,6 +204,7 @@ public class InfoFragment extends Fragment {
                     }
                 }
             } else {
+                results = null;
                 return results;
             }
 
@@ -215,30 +213,24 @@ public class InfoFragment extends Fragment {
 
         // Occurs after API calls, sends the track id
         protected void onPostExecute(String results){
+            String songLyricsBody = "Sorry, this song's lyrics are unavailable at this time.";
             if (results != null) {
                 adapter.clear();
-                String songLyricsBody = null;
 
                 // get string as json
                 try {
                     JSONObject jsonObject = new JSONObject(results);
-                    JSONArray message = jsonObject.getJSONArray("message");
-                    JSONArray songBody = message.getJSONArray(1);
-                    JSONArray songLyrics = songBody.getJSONArray(0);
-                    songLyricsBody = songLyrics.getString(6); // location of lyrics in JSONArray
+                    JSONObject songBody = jsonObject.getJSONObject("message").getJSONObject("body");
+                    JSONObject songLyrics = songBody.getJSONObject("lyrics");
+                    songLyricsBody = songLyrics.getString("lyrics_body"); // location of lyrics in JSONArray
 
                 } catch (JSONException e) {
                     Log.v(TAG, "JSON exception", e);
                 }
-
-                if (songLyricsBody != null) {
-                    TextView t = (TextView) getActivity().findViewById(R.id.textView);
-                    t.setText(songLyricsBody);
-                } else {
-                    TextView t = (TextView) getActivity().findViewById(R.id.textView); //if song not in database
-                    t.setText("Sorry, this song's lyrics are unavailable at this time.");
-                }
             }
+
+            TextView t = (TextView) getActivity().findViewById(R.id.textView);
+            t.setText(songLyricsBody);
         }
     }
 }
