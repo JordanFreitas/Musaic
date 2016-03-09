@@ -97,18 +97,17 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         repeatVal = false;
         seekHelper = new SeekHelper();
 
+
         //resets player on create
         mediaPlayer = new MediaPlayer();
+
         seekBar.setOnSeekBarChangeListener(this);
         mediaPlayer.setOnCompletionListener(this);
-//        if (mediaPlayer != null) {
-//            mediaPlayer.stop();
-//            mediaPlayer.release();
-//        }
 
-        position = bundle.getInt(POSITION);
-        playSong(position);
-
+        if(bundle!=null) {
+            position = bundle.getInt(POSITION);
+            playSong(position);
+        }
 
 
 
@@ -354,8 +353,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 
     @Override
     public void onDestroy(){
-        super.onDestroy();
-        mediaPlayer.release();
+
         super.onDestroy();
         mediaPlayer.release();
         handler.removeCallbacks(mUpdateTimeTask);

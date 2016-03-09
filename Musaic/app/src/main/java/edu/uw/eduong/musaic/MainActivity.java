@@ -1,5 +1,6 @@
 package edu.uw.eduong.musaic;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
                     .add(getSongs, GET_SONGS_FRAGMENT)
                     .commit();
         }
+//        Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
+//        intent.setAction(MediaPlayerService.ACTION_PLAY);
+//        startService(intent);
     }
 
     @Override
