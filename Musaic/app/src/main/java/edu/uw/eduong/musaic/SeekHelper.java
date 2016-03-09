@@ -34,7 +34,7 @@ public class SeekHelper {
 
 
     //Progress percentage of the song
-    public int getProgressPercentage(long currentDuration, long totalDuration){
+    public int percentage(long currentDuration, long totalDuration){
         Double percentage = (double) 0;
 
         long currentSeconds = (int) (currentDuration / 1000);

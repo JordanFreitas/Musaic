@@ -106,8 +106,8 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 //            mediaPlayer.release();
 //        }
 
-
-        playSong(bundle.getInt(POSITION));
+        position = bundle.getInt(POSITION);
+        playSong(position);
 
 
 
@@ -284,7 +284,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             leftTime.setText(""+seekHelper.timeConvert(currentDuration));
 
             // Updating progress bar
-            int progress = (int)(seekHelper.progress(currentDuration, totalDuration));
+            int progress = (int)(seekHelper.percentage(currentDuration, totalDuration));
             //Log.d("Progress", ""+progress);
             seekBar.setProgress(progress);
 
