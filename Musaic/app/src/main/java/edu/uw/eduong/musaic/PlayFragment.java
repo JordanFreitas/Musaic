@@ -215,6 +215,14 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             }
         });
 
+        Button wiki = (Button) rootView.findViewById(R.id.wiki);
+        wiki.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((songInfo) getActivity()).getSongInfo(position);
+            }
+        });
+
         return rootView;
     }
     /**
