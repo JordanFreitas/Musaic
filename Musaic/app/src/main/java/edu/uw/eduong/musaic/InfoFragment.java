@@ -39,14 +39,13 @@ public class InfoFragment extends Fragment {
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         //controller
-        adapter = new ArrayAdapter<>(this, R.layout.fragment_info, R.id.textView);
+        adapter = new ArrayAdapter<>(getActivity(), R.layout.fragment_info, R.id.textView);
 
         //supports either ListView or GridView
-        AdapterView textView = (AdapterView)findViewById(R.id.textView);
-        textView.setAdapter(adapter);
+        /*AdapterView textView = (AdapterView) getView().findViewById(R.id.textView);
+        textView.setAdapter(adapter);*/
     }
 
 
@@ -118,7 +117,7 @@ public class InfoFragment extends Fragment {
             if(results != null) {
 
                 if(results.contains("\"available\":0}")) {
-                    TextView t = (TextView) findViewById(R.id.textView); //if song not in database
+                    TextView t = (TextView) getView().findViewById(R.id.textView); //if song not in database
                     t.setText("Sorry, this song's lyrics are unavailable at this time.");
                 } else {
                     adapter.clear();
@@ -147,5 +146,7 @@ public class InfoFragment extends Fragment {
                 }
             }
         }
+
+
     }
 }
