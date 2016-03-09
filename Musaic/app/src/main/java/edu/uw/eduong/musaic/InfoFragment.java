@@ -23,9 +23,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 
 /**
@@ -35,6 +32,25 @@ public class InfoFragment extends Fragment {
 
     //Empty constructor
     public InfoFragment() {}
+
+    private ArrayAdapter<String> adapter;
+    private static final String TAG = "InputControl";
+
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //controller
+        adapter = new ArrayAdapter<>(this, R.layout.fragment_info, R.id.textView);
+
+        //supports either ListView or GridView
+        AdapterView textView = (AdapterView)findViewById(R.id.textView);
+        textView.setAdapter(adapter);
+    }
+
+
+
 
     // gathers song data
     public class songTask extends AsyncTask<String, Void, String> {
@@ -97,6 +113,39 @@ public class InfoFragment extends Fragment {
             return results;
         }
 
+        // Occurs after API call
+        protected void onPostExecute(String results){
+            if(results != null) {
 
+                if(results.contains("\"available\":0}")) {
+                    TextView t = (TextView) findViewById(R.id.textView); //if song not in database
+                    t.setText("Sorry, this song's lyrics are unavailable at this time.");
+                } else {
+                    adapter.clear();
+                    JSONArray songInfoList = null; // list that will contain all forecast info
+
+                    // get string as json
+                    try {
+                        JSONObject jsonObject = new JSONObject(results);
+                        songInfoList = jsonObject.getJSONArray("list");
+                    } catch (JSONException e) {
+                        Log.v(TAG, "JSON exception", e);
+                    }
+
+                    String trackID = ""; //tracks the song id number
+                    // creates a list of song info
+                    for (int i = 0; i < songInfoList.length(); i++) {
+                        try {
+                            //Accesses the date and time information
+                            JSONObject track = songInfoList.getJSONObject(i);
+                            JSONArray trackNumber = track.getJSONArray("track_id");
+                            trackID = trackNumber.get(0).toString();
+                        } catch (JSONException e) {
+                            Log.v(TAG, "JSON exception", e);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
