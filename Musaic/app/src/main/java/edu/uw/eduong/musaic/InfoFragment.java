@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -29,6 +31,8 @@ import java.net.URL;
  * Displays lyric sheet and/or wiki page (when possible)
  */
 public class InfoFragment extends Fragment {
+    private static final String POSITION = "position";
+    private static final String SONG = "SONG";
 
     //Empty constructor
     public InfoFragment() {}
@@ -37,8 +41,10 @@ public class InfoFragment extends Fragment {
     private static final String TAG = "InputControl";
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        View rootView = inflater.inflate(R.layout.fragment_info, container, false);
 
         //controller
         adapter = new ArrayAdapter<>(getActivity(), R.layout.fragment_info, R.id.textView);
@@ -46,24 +52,30 @@ public class InfoFragment extends Fragment {
         //supports either ListView or GridView
         /*AdapterView textView = (AdapterView) getView().findViewById(R.id.textView);
         textView.setAdapter(adapter);*/
+
+        Bundle bundle = getArguments();
+        Song song = bundle.getParcelable(SONG);
+
+        songTask getInfo = new songTask();
+        getInfo.execute(song);
+
+        return rootView;
     }
 
-
-
-
     // gathers song data
-    public class songTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... params) {
-            String zipCode = params[0];
-            //constructs the url for the openweathermap API request
+    public class songTask extends AsyncTask<Song, Void, String> {
+        protected String doInBackground(Song... params) {
+            Song song = params[0];
+
+            //constructs the url for the musixmatch API request
             String urlString = "";
             try {
                 Uri.Builder builder = new Uri.Builder();
                 builder.scheme("http") //Forms the url one segment at a time
                         .authority("api.musixmatch.com/ws/1.1/track.search")
-                        .appendQueryParameter("q_track", BuildConfig.MUSIXMATCH_API_KEY)
-                        .appendQueryParameter("q_artist", BuildConfig.MUSIXMATCH_API_KEY)
-                        .appendQueryParameter("q_has_lyrics", "1")
+                        .appendQueryParameter("q_track", song.getTitle())
+                        .appendQueryParameter("q_artist", song.getArtist())
+                        .appendQueryParameter("f_has_lyrics", "1")
                         .appendQueryParameter("apikey", BuildConfig.MUSIXMATCH_API_KEY);
                 urlString = builder.build().toString();
             } catch (Exception e) {
@@ -79,24 +91,41 @@ public class InfoFragment extends Fragment {
                 URL url = new URL(urlString);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
+                Log.v("WTF", "WHT4");
+
                 urlConnection.connect();
+
+                Log.v("WTF", "I q.q");
 
                 InputStream inputStream = urlConnection.getInputStream();
                 if (inputStream == null) {
+                    Log.v("WTF", "I q.q0");
+
                     return null;
                 }
+                Log.v("WTF", "I q.2");
+
                 reader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder builder = new StringBuilder();
                 String line;
 
                 while ((line = reader.readLine()) != null) {
+                    Log.v("WTF", "I q.q 4");
+
                     builder.append(line);
                 }
+
                 if (builder.length() == 0) {
+                    Log.v("WTF", "I q.q4");
+
                     return null;
                 }
+
                 results = builder.toString();
+                Log.v("WTF", results);
+
             } catch (IOException e) {
+                Log.v("fuck", "WHYY " + e.toString());
                 return null;
             } finally {
                 if (urlConnection != null) {
@@ -106,60 +135,43 @@ public class InfoFragment extends Fragment {
                     try {
                         reader.close();
                     } catch (final IOException e) {
+
                     }
                 }
             }
 
-            if(results.contains("\"available\":0}")) {
-                    //TextView t = (TextView) getView().findViewById(R.id.textView); //if song not in database
-                    //t.setText("Sorry, this song's lyrics are unavailable at this time.");
 
-                return null;
-            } else {
-                adapter.clear();
-                JSONArray songInfoList = null; // list that will contain all song info
+            // song track id and get lyrics
+            String track_id = null;
+            try {
+                JSONObject jsonObject = new JSONObject(results);
+                JSONArray message = jsonObject.getJSONArray("message");
+                JSONArray body = message.getJSONArray(1);
+                JSONArray track_list = body.getJSONArray(0);
+                track_id = track_list.getString(0); // location of lyrics in JSONArray
 
-                // get string as json
-                try {
-                    JSONObject jsonObject = new JSONObject(results);
-                    songInfoList = jsonObject.getJSONArray("list");
-                } catch (JSONException e) {
-                    Log.v(TAG, "JSON exception", e);
-                }
-
-                String trackID = ""; //tracks the song id number
-                // creates a list of song info
-                for (int i = 0; i < songInfoList.length(); i++) {
-                    try {
-                        //Accesses the date and time information
-                        JSONObject track = songInfoList.getJSONObject(i);
-                        JSONArray trackNumber = track.getJSONArray("track_id");
-                        trackID = trackNumber.get(0).toString();
-                    } catch (JSONException e) {
-                        Log.v(TAG, "JSON exception", e);
-                    }
-                }
-
+            } catch (JSONException e) {
+                Log.v(TAG, "JSON exception", e);
+            }
+            if (track_id != null) {
                 // gets the lyrics
                 String urlString2 = "";
                 try {
                     Uri.Builder builder = new Uri.Builder();
                     builder.scheme("http") //Forms the url one segment at a time
                             .authority("api.musixmatch.com/ws/1.1/track.lyrics.get")
-                            .appendQueryParameter("track_id", trackID)
+                            .appendQueryParameter("track_id", track_id)
                             .appendQueryParameter("apikey", BuildConfig.MUSIXMATCH_API_KEY);
                     urlString2 = builder.build().toString();
                 } catch (Exception e) {
                     return null;
                 }
 
-                //HttpURLConnection urlConnection = null;
-               reader = null;
-
-                //String results = null;
+                urlConnection = null;
+                reader = null;
 
                 try {
-                    URL url = new URL(urlString);
+                    URL url = new URL(urlString2);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");
                     urlConnection.connect();
@@ -179,6 +191,7 @@ public class InfoFragment extends Fragment {
                         return null;
                     }
                     results = builder.toString();
+                    Log.v("WTF2", results);
                 } catch (IOException e) {
                     return null;
                 } finally {
@@ -189,9 +202,12 @@ public class InfoFragment extends Fragment {
                         try {
                             reader.close();
                         } catch (final IOException e) {
+
                         }
                     }
                 }
+            } else {
+                return results;
             }
 
             return results;
@@ -199,25 +215,28 @@ public class InfoFragment extends Fragment {
 
         // Occurs after API calls, sends the track id
         protected void onPostExecute(String results){
-            if(results.contains("\"body\":[]}}")) {
-                TextView t = (TextView) getView().findViewById(R.id.textView); //if song not in database
-                t.setText("Sorry, this song's lyrics are unavailable at this time.");
-            } else {
+            if (results != null) {
                 adapter.clear();
-                JSONArray songBody = null; // list that will contain all song info
-                JSONArray songLyrics = null;
-                JSONArray songLyricsBody = null;
+                String songLyricsBody = null;
 
                 // get string as json
                 try {
                     JSONObject jsonObject = new JSONObject(results);
-                    songBody = jsonObject.getJSONArray("body");
-                    songLyrics = songBody.getJSONArray(0);
-                    songLyricsBody = songLyrics.getJSONArray(6); // location of lyrics in JSONArray
-                    TextView t = (TextView) getView().findViewById(R.id.textView);
-                    t.setText(songLyricsBody.toString());
+                    JSONArray message = jsonObject.getJSONArray("message");
+                    JSONArray songBody = message.getJSONArray(1);
+                    JSONArray songLyrics = songBody.getJSONArray(0);
+                    songLyricsBody = songLyrics.getString(6); // location of lyrics in JSONArray
+
                 } catch (JSONException e) {
                     Log.v(TAG, "JSON exception", e);
+                }
+
+                if (songLyricsBody != null) {
+                    TextView t = (TextView) getActivity().findViewById(R.id.textView);
+                    t.setText(songLyricsBody);
+                } else {
+                    TextView t = (TextView) getActivity().findViewById(R.id.textView); //if song not in database
+                    t.setText("Sorry, this song's lyrics are unavailable at this time.");
                 }
             }
         }
