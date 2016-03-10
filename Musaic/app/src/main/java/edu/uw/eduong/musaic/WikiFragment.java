@@ -141,11 +141,9 @@ public class WikiFragment extends Fragment {
                 // get string as json
                 try {
                     JSONObject jsonObject = new JSONObject(results);
-                    JSONObject wBody = jsonObject.getJSONObject("batchcomplete").getJSONObject("query");
-                    //Log.v(TAG, wBody.toString());
-                    JSONArray bandWiki = wBody.getJSONArray("pages");
-                    //Log.v(TAG, bandWiki.toString());
-                    JSONObject bandWiki2 = bandWiki.getJSONObject(0);
+                    JSONObject wBody = jsonObject.getJSONObject("query");
+                    JSONObject bandWiki = wBody.getJSONObject("pages");
+                    JSONObject bandWiki2 = wBody.getJSONObject("11937019");
                     wikiBody = bandWiki2.getString("extract"); // location of wiki text in JSONArray
 
                 } catch (JSONException e) {
