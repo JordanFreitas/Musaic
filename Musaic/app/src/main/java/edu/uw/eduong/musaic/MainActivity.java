@@ -2,6 +2,7 @@ package edu.uw.eduong.musaic;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
     private static final String SONGS_LIST = "songs_list"; //Songs list tag
     private static final String POSITION = "position";
     private static final String SONG = "SONG";
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
