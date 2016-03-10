@@ -77,6 +77,7 @@ public class WikiFragment extends Fragment {
                         .appendQueryParameter("exintro", "")
                         .appendQueryParameter("titles", song.getArtist());
                 urlString = builder.build().toString();
+                Log.v("WTF", urlString);
             } catch (Exception e) {
                 return null;
             }
@@ -141,8 +142,11 @@ public class WikiFragment extends Fragment {
                 try {
                     JSONObject jsonObject = new JSONObject(results);
                     JSONObject wBody = jsonObject.getJSONObject("batchcomplete").getJSONObject("query");
-                    JSONObject bandWiki = wBody.getJSONObject("pages");
-                    wikiBody = bandWiki.getString("extract"); // location of wiki text in JSONArray
+                    //Log.v(TAG, wBody.toString());
+                    JSONArray bandWiki = wBody.getJSONArray("pages");
+                    //Log.v(TAG, bandWiki.toString());
+                    JSONObject bandWiki2 = bandWiki.getJSONObject(0);
+                    wikiBody = bandWiki2.getString("extract"); // location of wiki text in JSONArray
 
                 } catch (JSONException e) {
                     Log.v(TAG, "JSON exception", e);

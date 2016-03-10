@@ -9,7 +9,8 @@ import java.util.ArrayList;
 // Displays a list of music on your phone
 public class MainActivity extends AppCompatActivity implements GetSongsFragment.displayer,
         MainFragment.songSelector,
-        PlayFragment.songInfo{
+        PlayFragment.songInfo,
+        PlayFragment.artistInfo{
     private ArrayList<Song> songs; //holds the list of songs
     private static final String GET_SONGS_FRAGMENT = "get_songs";
     private static final String SONGS_LIST = "songs_list"; //Songs list tag
@@ -87,6 +88,27 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
     @Override
     public void getSongInfo(int position) {
         InfoFragment info = new InfoFragment();
+        Bundle bundle = new Bundle();
+        Song song = songs.get(position);
+        bundle.putParcelable(SONG, song);
+        info.setArguments(bundle);
+
+        // Show play and song info if dual view, else just the info
+        if (findViewById(R.id.container) == null) {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.pane_right, info)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, info)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    public void getArtistInfo(int position) {
+        WikiFragment info = new WikiFragment();
         Bundle bundle = new Bundle();
         Song song = songs.get(position);
         bundle.putParcelable(SONG, song);

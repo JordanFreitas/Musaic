@@ -56,6 +56,10 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         void getSongInfo(int position);
     }
 
+    public interface artistInfo {
+        void getArtistInfo(int position);
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_play, container, false);
@@ -68,7 +72,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         albumArt = (ImageView) rootView.findViewById(R.id.albumArt);
 //        album.setText(Display Album Title);
 //
-        //songTitle.setText(Displlay song Name);
+        //songTitle.setText(Display song Name);
 
         seekBar = (SeekBar) rootView.findViewById(R.id.seek);
         playlist = (Button) rootView.findViewById(R.id.playlist);
@@ -219,7 +223,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         wiki.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((songInfo) getActivity()).getSongInfo(position);
+                ((artistInfo) getActivity()).getArtistInfo(position);
             }
         });
 
