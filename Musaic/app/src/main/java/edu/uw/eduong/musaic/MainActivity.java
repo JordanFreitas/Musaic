@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
                     .replace(R.id.container, main)
                     .commit();
         }
-
     }
 
     // for song selector on song click, play the song
@@ -100,7 +99,14 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
 
         // Show play and song lyrics if dual view, else just the lyrics
         if (findViewById(R.id.container) == null) {
+            PlayFragment play = new PlayFragment();
+            Bundle bundlePlay = new Bundle();
+            bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
+            bundlePlay.putInt(POSITION, position);
+            play.setArguments(bundlePlay);
+
             getFragmentManager().beginTransaction()
+                    .replace(R.id.pane_left, play)
                     .replace(R.id.pane_right, info)
                     .addToBackStack(null)
                     .commit();
