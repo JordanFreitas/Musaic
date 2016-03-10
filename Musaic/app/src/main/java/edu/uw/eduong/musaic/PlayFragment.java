@@ -296,7 +296,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         PendingIntent pi = PendingIntent.getActivity(getActivity(), 0, intent, 0);
         Notification notification = new NotificationCompat.Builder(getActivity())
                 .setSmallIcon(R.drawable.album)
-                .setContentTitle("Now Playing: " + songs.get(songIndex).getTitle() + " " + songs.get(songIndex).getArtist())
+                .setContentTitle("Now Playing: " + songs.get(songIndex).getTitle() + " - " + songs.get(songIndex).getArtist())
                         //.setContentText("")
                 .setContentIntent(pi)
                 .setAutoCancel(true)
