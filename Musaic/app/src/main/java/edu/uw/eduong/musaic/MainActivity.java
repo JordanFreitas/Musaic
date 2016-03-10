@@ -30,9 +30,6 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
                     .add(getSongs, GET_SONGS_FRAGMENT)
                     .commit();
         }
-//        Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
-//        intent.setAction(MediaPlayerService.ACTION_PLAY);
-//        startService(intent);
     }
 
     @Override
@@ -44,9 +41,16 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         main.setArguments(bundle);
         
         if (findViewById(R.id.container) == null) {
+            //default to first song if non selected
+            PlayFragment play = new PlayFragment();
+            Bundle bundlePlay = new Bundle();
+            bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
+            bundlePlay.putInt(POSITION, 0);
+            play.setArguments(bundlePlay);
+
             getFragmentManager().beginTransaction()
                     .add(R.id.pane_left, main)
-                    .add(R.id.pane_right, new PlayFragment())
+                    .add(R.id.pane_right, play)
                     .commit();
         } else {
             getFragmentManager().beginTransaction()
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         }
     }
 
+    // display fragment with song lyrics
     @Override
     public void getSongInfo(int position) {
         InfoFragment info = new InfoFragment();
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         bundle.putParcelable(SONG, song);
         info.setArguments(bundle);
 
-        // Show play and song info if dual view, else just the info
+        // Show play and song lyrics if dual view, else just the lyrics
         if (findViewById(R.id.container) == null) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.pane_right, info)
@@ -107,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         }
     }
 
+    // display fragment with artist wiki page
     public void getArtistInfo(int position) {
         WikiFragment info = new WikiFragment();
         Bundle bundle = new Bundle();

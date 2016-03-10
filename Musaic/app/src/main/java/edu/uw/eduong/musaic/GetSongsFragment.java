@@ -117,7 +117,6 @@ public class GetSongsFragment extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             ((displayer) getActivity()).displaySongs(songs);
-
         }
     }
 
