@@ -21,7 +21,6 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     private SongAdapter adapter;   //displays the songs
     private Menu menu;             //menu
     private static final String SONGS_LIST = "songs_list";  //Songs list tag
-    private songSelector callback;
 
     // Empty constructor
     public MainFragment() {}
@@ -58,7 +57,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        songSelector callback;
         try {
             callback = (songSelector) context;
         } catch (ClassCastException e) {
@@ -117,7 +116,6 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
             menuItem.setTitle("Z-A");
         } else {
             menuItem.setTitle("A-Z");
-
         }
     }
 

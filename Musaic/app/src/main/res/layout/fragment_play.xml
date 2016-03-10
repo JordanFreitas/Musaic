@@ -23,13 +23,10 @@
         android:layout_toEndOf="@+id/leftTimeDisplay"
         android:layout_alignParentBottom="true"
         android:paddingTop="0dp"/>
-    <!--<Button-->
-    <!--android:id="@+id/play"-->
-    <!--android:layout_below="@+id/albumArt"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content" />-->
+
     <ImageButton
         android:id="@+id/pause"
+        android:contentDescription="@string/pause"
         android:src="@drawable/pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,8 +36,8 @@
         android:adjustViewBounds="true" />
     <ImageButton
         android:id="@+id/next"
+        android:contentDescription="@string/next"
         android:src="@drawable/next"
-        android:text="left"
         android:layout_width="75sp"
         android:layout_height="75sp"
         android:layout_below="@+id/albumArt"
@@ -50,8 +47,8 @@
         android:adjustViewBounds="true" />
     <ImageButton
         android:id="@+id/back"
+        android:contentDescription="@string/previous"
         android:src="@drawable/previous"
-        android:text="left"
         android:layout_width="75sp"
         android:layout_height="75sp"
         android:layout_toLeftOf="@+id/pause"
@@ -62,6 +59,7 @@
 
     <ImageButton
         android:id="@+id/shuffle"
+        android:contentDescription="@string/shuffle"
         android:src="@drawable/shuffle"
         android:layout_width="50sp"
         android:layout_height="50sp"
@@ -72,6 +70,7 @@
         android:adjustViewBounds="true" />
     <ImageButton
         android:id="@+id/repeat"
+        android:contentDescription="@string/repeat"
         android:src="@drawable/repeat"
         android:layout_width="50sp"
         android:layout_height="50sp"
@@ -82,6 +81,7 @@
         android:adjustViewBounds="true" />
     <ImageButton
         android:id="@+id/lyrics"
+        android:contentDescription="@string/lyrics"
         android:src="@drawable/lyrics"
         android:layout_width="50sp"
         android:layout_height="50sp"
@@ -92,6 +92,7 @@
         android:adjustViewBounds="true" />
     <ImageButton
         android:id="@+id/wiki"
+        android:contentDescription="@string/wiki"
         android:src="@drawable/wiki"
         android:layout_width="50sp"
         android:layout_height="50sp"
@@ -102,6 +103,8 @@
         android:adjustViewBounds="true" />
     <ImageView
         android:id="@+id/albumArt"
+        android:src="@drawable/album"
+        android:contentDescription="@string/albumArt"
         android:layout_width="350sp"
         android:layout_height="350sp"
         android:layout_above="@+id/pause" />
