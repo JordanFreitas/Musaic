@@ -1,9 +1,6 @@
 package edu.uw.eduong.musaic;
 
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -257,10 +254,11 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 // make sure song has album art
                 if (song.getAlbumArt() != null) {
                     albumArt.setImageBitmap(song.getAlbumArt());
-                } else {
-                    Drawable albumArtwork = getActivity().getApplicationContext().getDrawable(R.drawable.album);
-                    albumArt.setImageDrawable(albumArtwork);
                 }
+//                } else {
+//                    Bitmap albumArtwork = BitmapFactory.decodeResource(getResources(), R.drawable.album);
+//                    albumArt.setImageBitmap(albumArtwork);
+//                }
 
                 artist.setText(song.getArtist());
                 album.setText(" / " + songs.get(songIndex).getAlbum());
