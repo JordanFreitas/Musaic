@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Musaic</string>
     <string name="title_activity_play">Play</string>
+    <string name="pause">pause</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
+    <string name="shuffle">shuffle</string>
+    <string name="repeat">repeat</string>
+    <string name="lyrics">lyrics</string>
+    <string name="wiki">wiki</string>
+    <string name="albumArt">album artwork</string>
 </resources>
