@@ -44,14 +44,13 @@ public class SongAdapter extends ArrayAdapter<Song> {
 
         // set song artist
         TextView textArtist = (TextView) view.findViewById(R.id.songArtist);
-        textArtist.setText(song.getArtist());
+        textArtist.setText(song.getArtist() +  " / " + song.getAlbum());
 
         // set song album art
         ImageView imageView = (ImageView) view.findViewById(R.id.songArt);
-        if (song.getAlbumArt() != null) {
-            imageView.setImageBitmap(song.getAlbumArt());
-        }
-//        } else {
+
+        imageView.setImageBitmap(song.getAlbumArt());
+    //        } else {
 //            Bitmap albumArtwork = BitmapFactory.decodeResource(getResources(), R.drawable.album);
 //            albumArt.setImageBitmap(albumArtwork);
 //        }

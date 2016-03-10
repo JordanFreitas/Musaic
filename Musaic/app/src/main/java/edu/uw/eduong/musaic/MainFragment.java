@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +19,6 @@ import java.util.Collections;
 public class MainFragment extends Fragment implements SongAdapter.SongAdapterClick {
     private ArrayList<Song> songs; //holds the list of songs to display
     private SongAdapter adapter;   //displays the songs
-    private Menu menu;             //menu
     private static final String SONGS_LIST = "songs_list";  //Songs list tag
 
     // Empty constructor
@@ -48,6 +48,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         adapter = new SongAdapter(
                 getActivity(), R.layout.song_item, songs);
         adapter.setClick(this);
+
     }
 
     @Override
@@ -65,39 +66,22 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         //support ListView or GridView
         AdapterView listView = (AdapterView)rootView.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
-        return rootView;
-    }
-
-    // create menu
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();   // clears menu as it is recreated when rotating
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu, menu);
-        this.menu = menu;
-    }
-
-    // handle menu click events
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId())
-        {
-//            case R.id.action_help:
-//
-//                return true;
-            case R.id.action_sort:
+        ImageView sort = (ImageView)rootView.findViewById(R.id.action_sort);
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 sortSongs();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
+
+
+        return rootView;
     }
 
     // sort songs

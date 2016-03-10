@@ -2,7 +2,6 @@ package edu.uw.eduong.musaic;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,8 +11,7 @@ import java.util.ArrayList;
 // Displays a list of music on your phone
 public class MainActivity extends AppCompatActivity implements GetSongsFragment.displayer,
         MainFragment.songSelector,
-        PlayFragment.songInfo,
-        PlayFragment.artistInfo {
+        PlayFragment.playFrag {
     private ArrayList<Song> songs; //holds the list of songs
     private static final String GET_SONGS_FRAGMENT = "get_songs";
     private static final String SONGS_LIST = "songs_list"; //Songs list tag
@@ -42,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         mediaPlayer = null;
     }
 
+    // display song list
     @Override
     public void displaySongs(ArrayList<Song> list) {
         songs = list;
@@ -58,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
 
             play.setArguments(bundlePlay);
             getFragmentManager().beginTransaction()
-                    .add(R.id.pane_left, main)
-                    .add(R.id.pane_right, play)
+                    .replace(R.id.pane_left, main)
+                    .replace(R.id.pane_right, play)
                     .commit();
         } else {
             getFragmentManager().beginTransaction()
@@ -82,10 +81,8 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         bundleMain.putParcelableArrayList(SONGS_LIST, songs);
         main.setArguments(bundleMain);
 
-        Log.v("wtfman", mediaPlayer + " ");
         if (mediaPlayer != null) {
             try {
-                Log.v("wtfman", "not null" + " ");
                 if (mediaPlayer.isPlaying()){
                     mediaPlayer.stop();
                 }

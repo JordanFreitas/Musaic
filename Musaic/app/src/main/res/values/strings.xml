@@ -11,6 +11,7 @@
     <string name="albumArt">album artwork</string>
     <string name="album">album</string>
 
-    <string name="sort">sort</string>
+    <string name="Music">Music</string>
+    <string name="information">Information</string>
 
 </resources>

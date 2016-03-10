@@ -41,19 +41,17 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     //Empty constructor
     public PlayFragment() {}
 
-    // show the song lyrics
-    public interface songInfo {
-        void getSongInfo(int position);
-    }
 
-    // show the artist wiki page info
-    public interface artistInfo {
+    // show the song lyrics
+    public interface playFrag {
+        void getSongInfo(int position);
         void getArtistInfo(int position);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_play, container, false);
+        setHasOptionsMenu(true);
 
         rightTime = (TextView) rootView.findViewById(R.id.rightTimeDisplay);
         leftTime = (TextView) rootView.findViewById(R.id.leftTimeDisplay);
@@ -217,18 +215,12 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 }
             }
         });
-//    playlist.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            Intent i = new Intent(getApplicationContext(), ------whatever the playlist class is going to be--------.class);
-//            startActivityForResult(i, 100);
-//        }
-//    });
+
         ImageButton lyrics = (ImageButton) rootView.findViewById(R.id.lyrics);
         lyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((songInfo) getActivity()).getSongInfo(position);
+                ((playFrag) getActivity()).getSongInfo(position);
             }
         });
 
@@ -236,7 +228,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         wiki.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((artistInfo) getActivity()).getArtistInfo(position);
+                ((playFrag) getActivity()).getArtistInfo(position);
             }
         });
 

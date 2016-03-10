@@ -117,6 +117,11 @@
         android:textSize="15sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit ="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:scrollHorizontally="true"/>
     <TextView
         android:id="@+id/artist"
@@ -125,7 +130,12 @@
         android:textStyle="italic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollHorizontally="true"/>
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true" />
     <TextView
         android:id="@+id/songTitle"
         android:layout_above="@+id/artist"
@@ -141,7 +151,8 @@
         android:layout_width="40sp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/seek"
-        />
+        android:layout_toLeftOf="@+id/seek"
+        android:layout_toStartOf="@+id/seek"/>
     <TextView
         android:id="@+id/rightTimeDisplay"
         android:paddingTop="20sp"

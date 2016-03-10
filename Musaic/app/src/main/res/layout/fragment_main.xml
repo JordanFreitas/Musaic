@@ -8,11 +8,22 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.uw.eduong.musaic.MainActivity">
+    tools:context=".MainFragment">
+
+    <ImageView
+        android:id="@+id/action_sort"
+        android:src="@drawable/sort"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:clickable="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
+    </ImageView>
 
     <!-- list of songs -->
     <ListView
         android:id="@+id/listView"
+        android:layout_below="@+id/action_sort"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         >
