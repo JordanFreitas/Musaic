@@ -80,6 +80,8 @@ public class GetSongsFragment extends Fragment {
                         (android.provider.MediaStore.Audio.Media._ID);
                 int artistColumn = musicCursor.getColumnIndex
                         (android.provider.MediaStore.Audio.Media.ARTIST);
+                int albumColumn = musicCursor.getColumnIndex
+                        (android.provider.MediaStore.Audio.Media.ALBUM);
                 int albumIdColumn = musicCursor.getColumnIndex
                         (android.provider.MediaStore.Audio.Media.ALBUM_ID);
                 int pathColumn = musicCursor.getColumnIndex
@@ -90,6 +92,7 @@ public class GetSongsFragment extends Fragment {
                     long id = musicCursor.getLong(idColumn);
                     String title = musicCursor.getString(titleColumn);
                     String artist = musicCursor.getString(artistColumn);
+                    String album = musicCursor.getString(albumColumn);
                     long albumId = musicCursor.getLong(albumIdColumn);
                     String path = musicCursor.getString(pathColumn);
                     Log.v(TAG, title + id + artist + albumId);
@@ -99,7 +102,7 @@ public class GetSongsFragment extends Fragment {
                     ContentResolver res = getActivity().getContentResolver();
                     Bitmap artwork = decodeSampledBitmapFromResource(uri, res, 100, 100);
 
-                    songs.add(new Song(id, title, artist, albumId, artwork, path));
+                    songs.add(new Song(id, title, artist, album, albumId, artwork, path));
                 }
                 while (musicCursor.moveToNext());
 

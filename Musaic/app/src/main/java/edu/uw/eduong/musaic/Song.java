@@ -13,14 +13,16 @@ public class Song implements Comparable<Song>, Parcelable {
     private long id;
     private String title;
     private String artist;
+    private String album;
     private long albumId;
     Bitmap albumArt;
     private String path;
 
-    public Song(long id, String title, String artist, long albumId, Bitmap albumArt, String path) {
+    public Song(long id, String title, String artist, String album, long albumId, Bitmap albumArt, String path) {
         this.id = id;
         this.title = title;
         this.artist = artist;
+        this.album = album;
         this.albumId = albumId;
         this.albumArt = albumArt;
         this.path = path;
@@ -36,6 +38,10 @@ public class Song implements Comparable<Song>, Parcelable {
 
     public String getArtist() {
         return this.artist;
+    }
+
+    public String getAlbum() {
+        return this.album;
     }
 
     public Long getAlbumId() { return this.albumId; }
@@ -54,6 +60,7 @@ public class Song implements Comparable<Song>, Parcelable {
         id = in.readLong();
         title = in.readString();
         artist = in.readString();
+        album = in.readString();
         albumId = in.readLong();
         albumArt = (Bitmap) in.readValue(Bitmap.class.getClassLoader());
         path = in.readString();
@@ -69,6 +76,7 @@ public class Song implements Comparable<Song>, Parcelable {
         dest.writeLong(id);
         dest.writeString(title);
         dest.writeString(artist);
+        dest.writeString(album);
         dest.writeLong(albumId);
         dest.writeValue(albumArt);
         dest.writeString(path);

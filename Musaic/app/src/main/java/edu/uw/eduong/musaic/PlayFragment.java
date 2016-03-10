@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     SeekBar seekBar;
     boolean shuffleVal;
     boolean repeatVal;
-    Button play, next, back, shuffle, repeat, playlist;
+    ImageButton play, next, back, shuffle, repeat;
     TextView album, artist, songTitle, rightTime, leftTime;
     ImageView albumArt;
     int position, randPosition;
@@ -75,12 +76,12 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         //songTitle.setText(Display song Name);
 
         seekBar = (SeekBar) rootView.findViewById(R.id.seek);
-        playlist = (Button) rootView.findViewById(R.id.playlist);
-        play = (Button) rootView.findViewById(R.id.pause);
-        next = (Button) rootView.findViewById(R.id.next);
-        back = (Button) rootView.findViewById(R.id.back);
-        shuffle = (Button) rootView.findViewById(R.id.shuffle);
-        repeat = (Button) rootView.findViewById(R.id.repeat);
+        //playlist = (Button) rootView.findViewById(R.id.playlist);
+        play = (ImageButton) rootView.findViewById(R.id.pause);
+        next = (ImageButton) rootView.findViewById(R.id.next);
+        back = (ImageButton) rootView.findViewById(R.id.back);
+        shuffle = (ImageButton) rootView.findViewById(R.id.shuffle);
+        repeat = (ImageButton) rootView.findViewById(R.id.repeat);
 
         position = 0;
         shuffleVal = false;
@@ -117,7 +118,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                     if(mediaPlayer!=null){
                         mediaPlayer.pause();
                         // Changing button image to play button
-                        //play.setBackgroundResource(R.drawable.play);
+                        play.setImageResource(R.drawable.play);
                     }
                 }else{
                     // Resume song
@@ -125,7 +126,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                         mediaPlayer.start();
                         Log.wtf("Started", "Plz");
                         // Changing button image to pause button
-                        //play.setBackgroundResource(R.drawable.pause);
+                        play.setImageResource(R.drawable.pause);
                     }
                 }
 
@@ -174,15 +175,15 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 if(shuffleVal){
                     shuffleVal = false;
                     Toast.makeText(getActivity(), "Shuffle is OFF", Toast.LENGTH_SHORT).show();
-                    shuffle.setBackgroundResource(R.drawable.shuffle);
+                    shuffle.setImageResource(R.drawable.shuffle);
                 }else{
                     // make repeat to true
                     shuffleVal= true;
                     Toast.makeText(getActivity(), "Shuffle is ON", Toast.LENGTH_SHORT).show();
                     // make shuffle to false
                     repeatVal = false;
-                    shuffle.setBackgroundResource(R.drawable.son);
-                    repeat.setBackgroundResource(R.drawable.repeat);
+                    shuffle.setImageResource(R.drawable.son);
+                    repeat.setImageResource(R.drawable.repeat);
                 }
             }
         });
@@ -192,15 +193,15 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 if(repeatVal){
                     repeatVal = false;
                     Toast.makeText(getActivity(), "Repeat is OFF", Toast.LENGTH_SHORT).show();
-                    repeat.setBackgroundResource(R.drawable.repeat);
+                    repeat.setImageResource(R.drawable.repeat);
                 }else{
                     // make repeat to true
                     repeatVal = true;
                     Toast.makeText(getActivity(), "Repeat is ON", Toast.LENGTH_SHORT).show();
                     // make shuffle to false
                     shuffleVal = false;
-                    repeat.setBackgroundResource(R.drawable.ron);
-                    shuffle.setBackgroundResource(R.drawable.shuffle);
+                    repeat.setImageResource(R.drawable.ron);
+                    shuffle.setImageResource(R.drawable.shuffle);
                 }
             }
         });
@@ -211,7 +212,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 //            startActivityForResult(i, 100);
 //        }
 //    });
-        Button lyrics = (Button) rootView.findViewById(R.id.lyrics);
+        ImageButton lyrics = (ImageButton) rootView.findViewById(R.id.lyrics);
         lyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,7 +220,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             }
         });
 
-        Button wiki = (Button) rootView.findViewById(R.id.wiki);
+        ImageButton wiki = (ImageButton) rootView.findViewById(R.id.wiki);
         wiki.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,6 +261,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             songTitle.setText(song);
             albumArt.setImageBitmap(songs.get(songIndex).getAlbumArt());
             artist.setText(songs.get(songIndex).getArtist());
+            album.setText(" / " + songs.get(songIndex).getAlbum());
             // Changing Button Image to pause image
             //////play.setBackgroundResource(R.drawable.pause);
 
