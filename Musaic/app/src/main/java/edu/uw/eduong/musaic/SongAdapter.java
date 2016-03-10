@@ -48,8 +48,12 @@ public class SongAdapter extends ArrayAdapter<Song> {
 
         // set song album art
         ImageView imageView = (ImageView) view.findViewById(R.id.songArt);
-        imageView.setImageBitmap(song.getAlbumArt());
-
+        if (song.getAlbumArt() == null) {
+            imageView.setImageResource(R.drawable.album);
+        } else {
+            imageView.setImageBitmap(song.getAlbumArt());
+        }
+        
         // set the on click action of the item
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -40,11 +40,8 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         // get the songs
         if (bundle != null) {
             songs = bundle.getParcelableArrayList(SONGS_LIST);
-            if (songs != null) {
-                Log.v("PLAYMUSIC", "YES");
-            } else {
-                Log.v("PLAYMUSIC", "???");
-                songs.isEmpty();
+            if (songs == null) {
+                songs = new ArrayList<>();
             }
         }
 

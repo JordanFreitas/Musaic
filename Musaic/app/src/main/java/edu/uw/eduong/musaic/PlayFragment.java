@@ -77,6 +77,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         repeatVal = false;
         seekHelper = new SeekHelper();
 
+        //TODO: Check if something is already playing
         //resets player on create
         mediaPlayer = new MediaPlayer();
 
