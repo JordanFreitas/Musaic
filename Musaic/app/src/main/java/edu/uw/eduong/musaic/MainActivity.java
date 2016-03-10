@@ -158,4 +158,22 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
             displaySongs(songs);
         }
     }
+//
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        super.onSaveInstanceState(savedInstanceState);
+//        // Save UI state changes to the savedInstanceState.
+//        // This bundle will be passed to onCreate if the process is
+//        // killed and restarted.
+//        savedInstanceState.putParcelableArrayList("songsList", songs);
+//        // etc.
+//    }
+//
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        // Restore UI state from the savedInstanceState.
+//        // This bundle has also been passed to onCreate.
+//        songs = savedInstanceState.getParcelableArrayList("songsList");
+//    }
 }
