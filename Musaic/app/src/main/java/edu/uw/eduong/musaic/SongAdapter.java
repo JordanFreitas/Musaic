@@ -48,30 +48,16 @@ public class SongAdapter extends ArrayAdapter<Song> {
 
         // set song album art
         ImageView imageView = (ImageView) view.findViewById(R.id.songArt);
-        imageView.setImageBitmap(song.getAlbumArt());
-
-        // TODO: TO FIX ADDITIONAL OPTIONS FOR ITEMS
-        PopupMenu popup = new PopupMenu(getContext(), view);
-        popup.getMenuInflater().inflate(R.menu.menu_song, popup.getMenu());
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                switch(item.getItemId())
-                {
-                    case R.id.action_lyrics:
-                        return true;
-                    case R.id.action_wiki:
-                        return true;
-                    default:
-                        return onMenuItemClick(item);
-                }
-            }
-        });
+        if (song.getAlbumArt() == null) {
+            //imageView.setImageDrawable(getResources().getDrawable(R.drawable.album));
+        } else {
+            imageView.setImageBitmap(song.getAlbumArt());
+        }
 
         // set the on click action of the item
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v(TAG, "hi");
                 // swap the fragments
                 click.songClick(position);
             }
