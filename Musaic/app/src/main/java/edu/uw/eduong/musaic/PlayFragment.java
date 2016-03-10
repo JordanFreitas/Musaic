@@ -1,7 +1,13 @@
 package edu.uw.eduong.musaic;
 
 import android.app.Fragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -233,6 +239,32 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             playSong(position);
         }
     }
+    public void showNotification(int songIndex) {
+        //PendingIntent pi = PendingIntent.getActivity(getActivity(), 0, new Intent(getActivity(), MainActivity.class), 0);
+        //Resources r = getResources();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getActivity());
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(intent);
+        //PendingIntent pi = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pi = PendingIntent.getActivity(getActivity(), 0, intent, 0);
+        Notification notification = new NotificationCompat.Builder(getActivity())
+                .setSmallIcon(R.drawable.album)
+                .setContentTitle("Now Playing: " + songs.get(songIndex).getTitle() + " " + songs.get(songIndex).getArtist())
+                        //.setContentText("")
+
+                .setContentIntent(pi)
+                .setAutoCancel(true)
+                .build();
+
+
+
+        Log.wtf("lol", "is it working");
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notification);
+        Log.wtf("lol", "now workin?");
+    }
 
     //plays the song
     public void playSong(int songIndex){
@@ -268,7 +300,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 // set Progress bar values
                 seekBar.setProgress(0);
                 seekBar.setMax(100);
-
+                showNotification(songIndex);
                 // Updating progress bar
                 updateProgressBar();
             } catch (IllegalArgumentException | IOException e) {
