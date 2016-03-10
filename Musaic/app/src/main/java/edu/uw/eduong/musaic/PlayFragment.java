@@ -6,9 +6,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.app.Fragment;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -17,7 +23,12 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
+
+
+
+import java.util.ArrayList;
 
 /**
  * Currently playing screen. Gives access to additional info
@@ -32,6 +43,8 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     TextView album, artist, songTitle, rightTime, leftTime;
     ImageView albumArt;
     int position, randPosition;
+    //    private int seekForwardTime = 5000;
+//    private int seekBackwardTime = 5000;
     private Handler handler = new Handler();
     private static final String SONGS_LIST = "songs_list";  //Songs list tag
     private static final String POSITION = "position";
@@ -40,12 +53,10 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     //Empty constructor
     public PlayFragment() {}
 
-    // show the song lyrics
     public interface songInfo {
         void getSongInfo(int position);
     }
 
-    // show the artist wiki page info
     public interface artistInfo {
         void getArtistInfo(int position);
     }
@@ -60,8 +71,12 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         artist = (TextView) rootView.findViewById(R.id.artist);
         songTitle = (TextView) rootView.findViewById(R.id.songTitle);
         albumArt = (ImageView) rootView.findViewById(R.id.albumArt);
+//        album.setText(Display Album Title);
+//
+        //songTitle.setText(Display song Name);
 
         seekBar = (SeekBar) rootView.findViewById(R.id.seek);
+        //playlist = (Button) rootView.findViewById(R.id.playlist);
         play = (ImageButton) rootView.findViewById(R.id.pause);
         next = (ImageButton) rootView.findViewById(R.id.next);
         back = (ImageButton) rootView.findViewById(R.id.back);
@@ -73,7 +88,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         repeatVal = false;
         seekHelper = new SeekHelper();
 
-        //TODO: Check if something is already playing
         //resets player on create
         mediaPlayer = new MediaPlayer();
 
@@ -94,6 +108,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             position = bundle.getInt(POSITION);
             playSong(position);
         }
+
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,45 +242,39 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             // play selected song
             playSong(position);
         }
+
     }
 
     //plays the song
     public void  playSong(int songIndex){
         // Play song
-        if (!songs.isEmpty()) {
-            try {
-                Song song = songs.get(songIndex);
+        try {
+            Log.wtf("song", ""+songIndex);
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(songs.get(songIndex).getPath());
+            //ioException e
+            //TODO: HANDLE EXCEPTION
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+            // Displaying Song title
+            String song = songs.get(songIndex).getTitle();
+            songTitle.setText(song);
+            albumArt.setImageBitmap(songs.get(songIndex).getAlbumArt());
+            artist.setText(songs.get(songIndex).getArtist());
+            album.setText(" / " + songs.get(songIndex).getAlbum());
+            // Changing Button Image to pause image
+            //////play.setBackgroundResource(R.drawable.pause);
 
-                mediaPlayer.reset();
-                mediaPlayer.setDataSource(song.getPath());
-                //ioException e
+            // set Progress bar values
+            seekBar.setProgress(0);
+            seekBar.setMax(100);
 
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-                // Displaying Song title
-                String songString = song.getTitle();
-                songTitle.setText(songString);
-
-                // make sure song has album art
-                if (song.getAlbumArt() != null) {
-                    albumArt.setImageBitmap(song.getAlbumArt());
-                } else {
-                    albumArt.setImageResource(R.drawable.album);
-                }
-                artist.setText(song.getArtist());
-                album.setText(R.string.slash + song.getAlbum());
-                // Changing Button Image to pause image
-                //////play.setBackgroundResource(R.drawable.pause);
-
-                // set Progress bar values
-                seekBar.setProgress(0);
-                seekBar.setMax(100);
-
-                // Updating progress bar
-                updateProgressBar();
-            } catch (IllegalArgumentException | IOException e) {
-                e.printStackTrace();
-            }
+            // Updating progress bar
+            updateProgressBar();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -335,26 +344,25 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
      * if shuffle is ON play random song
      * */
     public void onCompletion(MediaPlayer arg0) {
-        if (!songs.isEmpty()) {
-            // check for repeat is ON or OFF
-            if (repeatVal) {
-                // repeat is on play same song again
-                playSong(position);
-            } else if (shuffleVal) {
-                // shuffle is on - play a random song
-                Random r = new Random();
-                position = r.nextInt((songs.size() - 1) + 1);
-                playSong(position);
-            } else {
-                // no repeat or shuffle ON - play next song
-                if (position < (songs.size() - 1)) {
-                    playSong(position + 1);
-                    position++;
-                } else {
-                    // play first song
-                    playSong(0);
-                    position = 0;
-                }
+
+        // check for repeat is ON or OFF
+        if(repeatVal){
+            // repeat is on play same song again
+            playSong(position);
+        } else if(shuffleVal){
+            // shuffle is on - play a random song
+            Random r = new Random();
+            position = r.nextInt((songs.size() - 1) + 1);
+            playSong(position);
+        } else{
+            // no repeat or shuffle ON - play next song
+            if(position < (songs.size() - 1)){
+                playSong(position + 1);
+                position ++;
+            }else {
+                // play first song
+                playSong(0);
+                position = 0;
             }
         }
     }
@@ -366,8 +374,3 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         handler.removeCallbacks(mUpdateTimeTask);
     }
 }
-
-
-
-
-
