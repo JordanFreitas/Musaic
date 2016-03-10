@@ -12,20 +12,8 @@
                 tools:context="edu.uw.eduong.musaic.Play"
                 >
 
-    <SeekBar
-        android:id="@+id/seek"
-        android:layout_width="275sp"
-        android:layout_height="50sp"
-        android:padding="20sp"
-        android:layout_toRightOf="@+id/leftTimeDisplay"
-        android:layout_toEndOf="@+id/leftTimeDisplay"
-        android:layout_alignParentBottom="true"
-        android:paddingTop="0dp"/>
-    <!--<Button-->
-    <!--android:id="@+id/play"-->
-    <!--android:layout_below="@+id/albumArt"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content" />-->
+
+
     <ImageButton
         android:id="@+id/pause"
         android:src="@drawable/pause"
@@ -110,21 +98,42 @@
         android:layout_above="@id/albumArt"
         android:textSize="15sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit ="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true" />
+
     <TextView
         android:id="@+id/artist"
         android:layout_above="@+id/albumArt"
         android:textSize="15sp"
         android:textStyle="italic"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit ="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true" />
+
     <TextView
         android:id="@+id/songTitle"
         android:layout_above="@+id/artist"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_width="500sp"
-        android:layout_height="30sp" />
+        android:layout_height="30sp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit ="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true" />
+
     <TextView
         android:id="@+id/leftTimeDisplay"
         android:paddingTop="20sp"
@@ -133,6 +142,19 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/seek"
          />
+
+    <SeekBar
+        android:id="@+id/seek"
+        android:layout_width="275sp"
+        android:layout_height="70sp"
+        android:padding="20sp"
+        android:layout_toRightOf="@+id/leftTimeDisplay"
+        android:layout_toEndOf="@+id/leftTimeDisplay"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="0dp"
+        android:minHeight="70dip"
+        android:maxHeight="70dip" />
+
     <TextView
         android:id="@+id/rightTimeDisplay"
         android:paddingTop="20sp"
