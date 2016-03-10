@@ -258,8 +258,8 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 if (song.getAlbumArt() != null) {
                     albumArt.setImageBitmap(song.getAlbumArt());
                 } else {
-                    Bitmap albumArtwork = BitmapFactory.decodeResource(getResources(), R.drawable.album);
-                    albumArt.setImageBitmap(albumArtwork);
+                    Drawable albumArtwork = getActivity().getApplicationContext().getDrawable(R.drawable.album);
+                    albumArt.setImageDrawable(albumArtwork);
                 }
 
                 artist.setText(song.getArtist());

@@ -48,11 +48,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
 
         // set song album art
         ImageView imageView = (ImageView) view.findViewById(R.id.songArt);
-        if (song.getAlbumArt() == null) {
-            //imageView.setImageDrawable(getResources().getDrawable(R.drawable.album));
-        } else {
-            imageView.setImageBitmap(song.getAlbumArt());
-        }
+        imageView.setImageBitmap(song.getAlbumArt());
 
         // set the on click action of the item
         view.setOnClickListener(new View.OnClickListener() {
