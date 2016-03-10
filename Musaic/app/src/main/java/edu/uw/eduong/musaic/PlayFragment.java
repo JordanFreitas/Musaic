@@ -88,7 +88,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         if (bundle != null) {
             songs = bundle.getParcelableArrayList(SONGS_LIST);
             if (songs == null) {
-                songs = new ArrayList<>();
+                songs.clear();
             }
 
             position = bundle.getInt(POSITION);

@@ -48,15 +48,15 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         
         if (findViewById(R.id.container) == null) {
             //default to first song if non selected
-            PlayFragment play = new PlayFragment();
-            Bundle bundlePlay = new Bundle();
-            bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
-            bundlePlay.putInt(POSITION, 0);
-            play.setArguments(bundlePlay);
+//            PlayFragment play = new PlayFragment();
+//            Bundle bundlePlay = new Bundle();
+//            bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
+//            bundlePlay.putInt(POSITION, 0);
+//            play.setArguments(bundlePlay);
 
             getFragmentManager().beginTransaction()
                     .add(R.id.pane_left, main)
-                    .add(R.id.pane_right, play)
+                    .add(R.id.pane_right, new PlayFragment())
                     .commit();
         } else {
             getFragmentManager().beginTransaction()
