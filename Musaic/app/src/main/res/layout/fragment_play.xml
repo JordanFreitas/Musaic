@@ -103,7 +103,6 @@
         android:adjustViewBounds="true" />
     <ImageView
         android:id="@+id/albumArt"
-        android:src="@drawable/album"
         android:contentDescription="@string/albumArt"
         android:layout_width="350sp"
         android:layout_height="350sp"

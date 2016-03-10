@@ -53,7 +53,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
         } else {
             imageView.setImageBitmap(song.getAlbumArt());
         }
-        
+
         // set the on click action of the item
         view.setOnClickListener(new View.OnClickListener() {
             @Override
