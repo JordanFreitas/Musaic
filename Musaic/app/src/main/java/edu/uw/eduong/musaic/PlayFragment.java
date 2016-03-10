@@ -235,7 +235,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
     }
 
     //plays the song
-    public void  playSong(int songIndex){
+    public void playSong(int songIndex){
         // Play song
         if (!songs.isEmpty()) {
             try {
@@ -254,9 +254,11 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
                 // make sure song has album art
                 if (song.getAlbumArt() != null) {
                     albumArt.setImageBitmap(song.getAlbumArt());
-                } else {
-                    albumArt.setImageResource(R.drawable.album);
                 }
+//                } else {
+//                    albumArt.setImageResource(R.drawable.album);
+//                }
+
                 artist.setText(song.getArtist());
                 album.setText(" / " + songs.get(songIndex).getAlbum());
                 // Changing Button Image to pause image
