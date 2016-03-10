@@ -20,7 +20,7 @@ import android.os.IBinder;
  */
 public class MediaPlayerService extends Service{
 
-    private MediaSession mSession;
+
     public static final String ACTION_PLAY = "action_play";
     public static final String ACTION_PAUSE = "action_pause";
     public static final String ACTION_REWIND = "action_rewind";
@@ -31,6 +31,7 @@ public class MediaPlayerService extends Service{
 
     private MediaPlayer mMediaPlayer;
     private MediaSessionManager mManager;
+    private MediaSession mSession;
     private MediaController mController;
 
     @Override
@@ -82,7 +83,7 @@ public class MediaPlayerService extends Service{
         PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 1, intent, 0);
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Lock Screen Media Example")
+                .setContentTitle("Song Name")
                 .setContentText("Artist Name")
                 .setDeleteIntent(pendingIntent)
                 .setStyle(style);
@@ -111,6 +112,7 @@ public class MediaPlayerService extends Service{
     private void initMediaSession() {
         mMediaPlayer = new MediaPlayer();
 
+        mManager = (MediaSessionManager) getSystemService(Context.MEDIA_SESSION_SERVICE);
         mSession = new MediaSession(getApplicationContext(), "example player session");
         mController = new MediaController(getApplicationContext(), mSession.getSessionToken());
 
