@@ -9,5 +9,6 @@
         android:layout_height="match_parent"
         android:text="Information"
         android:id="@+id/textView"
+        android:gravity="center"
         android:layout_gravity="center_horizontal"/>
 </LinearLayout>
