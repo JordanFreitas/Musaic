@@ -21,7 +21,6 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     private SongAdapter adapter;   //displays the songs
     private Menu menu;             //menu
     private static final String SONGS_LIST = "songs_list";  //Songs list tag
-    private songSelector callback;
 
     // Empty constructor
     public MainFragment() {}
@@ -41,11 +40,8 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
         // get the songs
         if (bundle != null) {
             songs = bundle.getParcelableArrayList(SONGS_LIST);
-            if (songs != null) {
-                Log.v("PLAYMUSIC", "YES");
-            } else {
-                Log.v("PLAYMUSIC", "???");
-                songs.isEmpty();
+            if (songs == null) {
+                songs = new ArrayList<>();
             }
         }
 
@@ -58,7 +54,7 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        songSelector callback;
         try {
             callback = (songSelector) context;
         } catch (ClassCastException e) {
@@ -117,14 +113,12 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
             menuItem.setTitle("Z-A");
         } else {
             menuItem.setTitle("A-Z");
-
         }
     }
 
     // when song item is clicked
     @Override
     public void songClick(int position) {
-        //dostuff;
         ((songSelector) getActivity()).songSelected(position);
     }
 }
