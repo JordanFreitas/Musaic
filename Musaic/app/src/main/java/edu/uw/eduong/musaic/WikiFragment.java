@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +26,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
 
 
 /**
  * Displays lyric sheet and/or wiki page (when possible)
  */
 public class WikiFragment extends Fragment {
-    private static final String POSITION = "position";
     private static final String SONG = "SONG";
 
     //Empty constructor
@@ -67,7 +68,7 @@ public class WikiFragment extends Fragment {
             String urlString = "";
             try {
                 Uri.Builder builder = new Uri.Builder();
-                builder.scheme("http") //Forms the url one segment at a time
+                builder.scheme("https") //Forms the url one segment at a time
                         .authority("en.wikipedia.org")
                         .appendPath("w")
                         .appendPath("api.php")
@@ -77,7 +78,6 @@ public class WikiFragment extends Fragment {
                         .appendQueryParameter("exintro", "")
                         .appendQueryParameter("titles", song.getArtist());
                 urlString = builder.build().toString();
-                Log.v("WTF", urlString);
             } catch (Exception e) {
                 return null;
             }
@@ -91,9 +91,7 @@ public class WikiFragment extends Fragment {
                 URL url = new URL(urlString);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-
                 urlConnection.connect();
-
 
                 InputStream inputStream = urlConnection.getInputStream();
                 if (inputStream == null) {
@@ -101,6 +99,7 @@ public class WikiFragment extends Fragment {
                 }
 
                 reader = new BufferedReader(new InputStreamReader(inputStream));
+
                 StringBuilder builder = new StringBuilder();
                 String line;
 
@@ -109,8 +108,6 @@ public class WikiFragment extends Fragment {
                 }
 
                 if (builder.length() == 0) {
-                    Log.v("WTF", "I q.q4");
-
                     return null;
                 }
 
@@ -125,7 +122,7 @@ public class WikiFragment extends Fragment {
                     try {
                         reader.close();
                     } catch (final IOException e) {
-
+                        Log.v(TAG, "Exception" + e);
                     }
                 }
             }
@@ -142,9 +139,11 @@ public class WikiFragment extends Fragment {
                 try {
                     JSONObject jsonObject = new JSONObject(results);
                     JSONObject wBody = jsonObject.getJSONObject("query");
-                    JSONObject bandWiki = wBody.getJSONObject("pages");
-                    JSONObject bandWiki2 = wBody.getJSONObject("11937019");
-                    wikiBody = bandWiki2.getString("extract"); // location of wiki text in JSONArray
+                    JSONObject pages = wBody.getJSONObject("pages");
+                    Iterator<String> keys = pages.keys();
+                    String key = keys.next();
+                    JSONObject bandWiki = pages.getJSONObject(key);
+                    wikiBody = bandWiki.getString("extract"); // location of wiki text in JSONArray
 
                 } catch (JSONException e) {
                     Log.v(TAG, "JSON exception", e);
@@ -152,7 +151,7 @@ public class WikiFragment extends Fragment {
             }
 
             TextView t = (TextView) getActivity().findViewById(R.id.textView);
-            t.setText(wikiBody);
+            t.setText(Html.fromHtml(wikiBody));
         }
     }
 }
