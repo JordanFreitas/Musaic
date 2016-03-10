@@ -320,6 +320,7 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
 
                 mediaPlayer.setDataSource(song.getPath());
                 //ioException e
+                mediaPlayer.setOnCompletionListener(this);
                 play.setImageResource(R.drawable.pause);
 
                 mediaPlayer.prepare();
