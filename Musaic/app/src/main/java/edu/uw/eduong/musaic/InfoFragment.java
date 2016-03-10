@@ -3,16 +3,12 @@ package edu.uw.eduong.musaic;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -26,12 +22,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 /**
  * Displays lyric sheet and/or wiki page (when possible)
  */
 public class InfoFragment extends Fragment {
-    private static final String POSITION = "position";
     private static final String SONG = "SONG";
 
     //Empty constructor
@@ -97,7 +91,6 @@ public class InfoFragment extends Fragment {
 
                 urlConnection.connect();
 
-
                 InputStream inputStream = urlConnection.getInputStream();
                 if (inputStream == null) {
                     return null;
@@ -112,8 +105,6 @@ public class InfoFragment extends Fragment {
                 }
 
                 if (builder.length() == 0) {
-                    Log.v("WTF", "I q.q4");
-
                     return null;
                 }
 
@@ -128,7 +119,7 @@ public class InfoFragment extends Fragment {
                     try {
                         reader.close();
                     } catch (final IOException e) {
-
+                        Log.v(TAG, "Exception" + e);
                     }
                 }
             }
@@ -188,7 +179,6 @@ public class InfoFragment extends Fragment {
                         return null;
                     }
                     results = builder.toString();
-                    Log.v("WTF2", results);
                 } catch (IOException e) {
                     return null;
                 } finally {
@@ -199,13 +189,10 @@ public class InfoFragment extends Fragment {
                         try {
                             reader.close();
                         } catch (final IOException e) {
-
+                            Log.v(TAG, "Exception" + e);
                         }
                     }
                 }
-            } else {
-                results = null;
-                return results;
             }
 
             return results;
