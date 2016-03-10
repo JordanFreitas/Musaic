@@ -1,5 +1,6 @@
 package edu.uw.eduong.musaic;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +11,7 @@ import android.media.MediaPlayer;
 import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
+import android.os.Build;
 import android.os.IBinder;
 
 /**
@@ -39,12 +41,14 @@ public class MediaPlayerService extends Service{
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onUnbind(Intent intent) {
         mSession.release();
         return super.onUnbind(intent);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void handleIntent(Intent intent) {
         if(intent == null || intent.getAction() == null) {
             return;
@@ -69,6 +73,7 @@ public class MediaPlayerService extends Service{
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT_WATCH)
     private Notification.Action generateAction(int icon, String title, String intentAction) {
         Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
         intent.setAction(intentAction);
@@ -76,6 +81,7 @@ public class MediaPlayerService extends Service{
         return new Notification.Action.Builder(icon, title, pendingIntent).build();
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void buildNotification(Notification.Action action) {
         Notification.MediaStyle style = new Notification.MediaStyle();
         Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
@@ -109,6 +115,7 @@ public class MediaPlayerService extends Service{
         return super.onStartCommand(intent, flags, startId);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void initMediaSession() {
         mMediaPlayer = new MediaPlayer();
 
