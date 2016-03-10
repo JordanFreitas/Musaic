@@ -1,23 +1,23 @@
 package edu.uw.eduong.musaic;
 
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 // Displays a list of music on your phone
 public class MainActivity extends AppCompatActivity implements GetSongsFragment.displayer,
         MainFragment.songSelector,
-        PlayFragment.songInfo,
-        PlayFragment.artistInfo {
+        PlayFragment.playFrag {
     private ArrayList<Song> songs; //holds the list of songs
     private static final String GET_SONGS_FRAGMENT = "get_songs";
     private static final String SONGS_LIST = "songs_list"; //Songs list tag
     private static final String POSITION = "position";
     private static final String SONG = "SONG";
+    public MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,11 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
                     .add(getSongs, GET_SONGS_FRAGMENT)
                     .commit();
         }
+
+        mediaPlayer = null;
     }
 
+    // display song list
     @Override
     public void displaySongs(ArrayList<Song> list) {
         songs = list;
@@ -47,16 +50,15 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         main.setArguments(bundle);
 
         if (findViewById(R.id.container) == null) {
-            //default to first song if non selected
             PlayFragment play = new PlayFragment();
             Bundle bundlePlay = new Bundle();
             bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
             bundlePlay.putInt(POSITION, 0);
-            play.setArguments(bundlePlay);
 
+            play.setArguments(bundlePlay);
             getFragmentManager().beginTransaction()
-                    .add(R.id.pane_left, main)
-                    .add(R.id.pane_right, play)
+                    .replace(R.id.pane_left, main)
+                    .replace(R.id.pane_right, play)
                     .commit();
         } else {
             getFragmentManager().beginTransaction()
@@ -78,6 +80,19 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
         Bundle bundleMain = new Bundle();
         bundleMain.putParcelableArrayList(SONGS_LIST, songs);
         main.setArguments(bundleMain);
+
+        if (mediaPlayer != null) {
+            try {
+                if (mediaPlayer.isPlaying()){
+                    mediaPlayer.stop();
+                }
+            } catch (IllegalStateException e){
+                Log.v("Main", "exception" + e);
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        mediaPlayer = new MediaPlayer();
 
         // Show Main List and Play if dual view, else just the play
         if (findViewById(R.id.container) == null) {
@@ -105,14 +120,7 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
 
         // Show play and song lyrics if dual view, else just the lyrics
         if (findViewById(R.id.container) == null) {
-            PlayFragment play = new PlayFragment();
-            Bundle bundlePlay = new Bundle();
-            bundlePlay.putParcelableArrayList(SONGS_LIST, songs);
-            bundlePlay.putInt(POSITION, position);
-            play.setArguments(bundlePlay);
-
             getFragmentManager().beginTransaction()
-                    .replace(R.id.pane_left, play)
                     .replace(R.id.pane_right, info)
                     .addToBackStack(null)
                     .commit();
@@ -150,9 +158,31 @@ public class MainActivity extends AppCompatActivity implements GetSongsFragment.
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
+            if (mediaPlayer != null) {
+                try {
+                    if (mediaPlayer.isPlaying()){
+                        mediaPlayer.stop();
+                    }
+                } catch (IllegalStateException e){
+                    Log.v("Play", "exception" + e);
+                }
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
+    }
+
+    //gets mediaplayer value
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
+
+    //set mediaplayer value
+    public void setMediaPlayer(MediaPlayer mp) {
+        mediaPlayer = mp;
     }
 }

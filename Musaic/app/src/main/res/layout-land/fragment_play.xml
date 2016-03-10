@@ -116,21 +116,34 @@
         android:layout_above="@id/albumArt"
         android:textSize="15sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit ="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"/>
     <TextView
         android:id="@+id/artist"
         android:layout_above="@+id/albumArt"
         android:textSize="15sp"
         android:textStyle="italic"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true" />
     <TextView
         android:id="@+id/songTitle"
         android:layout_above="@+id/artist"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_width="500sp"
-        android:layout_height="30sp" />
+        android:layout_height="30sp"
+        android:scrollHorizontally="true"/>
     <TextView
         android:id="@+id/leftTimeDisplay"
         android:paddingTop="20sp"
@@ -138,7 +151,8 @@
         android:layout_width="40sp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/seek"
-        />
+        android:layout_toLeftOf="@+id/seek"
+        android:layout_toStartOf="@+id/seek"/>
     <TextView
         android:id="@+id/rightTimeDisplay"
         android:paddingTop="20sp"
