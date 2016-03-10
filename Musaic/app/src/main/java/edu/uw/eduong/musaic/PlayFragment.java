@@ -60,12 +60,8 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
         artist = (TextView) rootView.findViewById(R.id.artist);
         songTitle = (TextView) rootView.findViewById(R.id.songTitle);
         albumArt = (ImageView) rootView.findViewById(R.id.albumArt);
-//        album.setText(Display Album Title);
-//
-        //songTitle.setText(Display song Name);
 
         seekBar = (SeekBar) rootView.findViewById(R.id.seek);
-        //playlist = (Button) rootView.findViewById(R.id.playlist);
         play = (ImageButton) rootView.findViewById(R.id.pause);
         next = (ImageButton) rootView.findViewById(R.id.next);
         back = (ImageButton) rootView.findViewById(R.id.back);
@@ -98,7 +94,6 @@ public class PlayFragment extends Fragment implements MediaPlayer.OnCompletionLi
             position = bundle.getInt(POSITION);
             playSong(position);
         }
-
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override

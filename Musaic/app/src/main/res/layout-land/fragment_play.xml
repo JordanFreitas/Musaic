@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="4dp"
@@ -10,7 +11,7 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:context="edu.uw.eduong.musaic.Play"
-                >
+    >
 
     <SeekBar
         android:id="@+id/seek"
@@ -21,25 +22,24 @@
         android:padding="10sp"
         android:paddingTop="0dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/back"
-        android:layout_alignStart="@+id/back"/>
+        android:layout_centerHorizontal="true"/>
 
     <ImageButton
         android:id="@+id/pause"
         android:contentDescription="@string/pause"
         android:src="@drawable/pause"
-        android:layout_width="wrap_content"
+        android:layout_width="75sp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/seek"
-        android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:layout_alignTop="@+id/next"
+        android:layout_centerHorizontal="true"/>
     <ImageButton
         android:id="@+id/next"
         android:contentDescription="@string/next"
         android:src="@drawable/next"
-        android:layout_width="75sp"
-        android:layout_height="75sp"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
         android:layout_below="@+id/albumArt"
         android:layout_toRightOf="@+id/pause"
         android:layout_toEndOf="@+id/pause"
@@ -49,8 +49,8 @@
         android:id="@+id/back"
         android:contentDescription="@string/previous"
         android:src="@drawable/previous"
-        android:layout_width="75sp"
-        android:layout_height="75sp"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
         android:layout_toLeftOf="@+id/pause"
         android:layout_toStartOf="@+id/pause"
         android:layout_below="@+id/albumArt"
@@ -104,10 +104,11 @@
     <ImageView
         android:id="@+id/albumArt"
         android:contentDescription="@string/albumArt"
-        android:layout_width="350sp"
-        android:layout_height="350sp"
-        android:layout_above="@+id/pause"
-        android:layout_centerHorizontal="true"/>
+        android:layout_width="250sp"
+        android:layout_height="250sp"
+        android:layout_below="@+id/lyrics"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15sp"/>
     <TextView
         android:id="@+id/album"
         android:layout_toRightOf="@+id/artist"
@@ -137,8 +138,7 @@
         android:layout_width="40sp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/seek"
-        android:layout_toRightOf="@+id/album"
-        android:layout_toEndOf="@+id/album"/>
+        />
     <TextView
         android:id="@+id/rightTimeDisplay"
         android:paddingTop="20sp"
