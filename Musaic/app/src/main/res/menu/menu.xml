@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainFragment">
 
-    <item android:id="@+id/action_help"
-        android:title="Whatdo"
-        android:orderInCategory="1"
-        app:showAsAction="ifRoom" />
+    <!--<item android:id="@+id/action_help"-->
+        <!--android:title="List"-->
+        <!--android:orderInCategory="1"-->
+        <!--app:showAsAction="ifRoom" />-->
 
     <item android:id="@+id/action_sort"
-        android:title="Z-A"
+        android:title="@string/sort"
         android:orderInCategory="1"
         app:showAsAction="never" />
 

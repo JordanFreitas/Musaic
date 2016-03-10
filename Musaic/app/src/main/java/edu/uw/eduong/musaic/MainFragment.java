@@ -3,7 +3,6 @@ package edu.uw.eduong.musaic;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,8 +89,9 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId())
         {
-            case R.id.action_help:
-                return true;
+//            case R.id.action_help:
+//
+//                return true;
             case R.id.action_sort:
                 sortSongs();
                 return true;
@@ -104,16 +104,6 @@ public class MainFragment extends Fragment implements SongAdapter.SongAdapterCli
     public void sortSongs() {
         Collections.reverse(songs);
         adapter.notifyDataSetChanged();
-
-        MenuItem menuItem = menu.findItem(R.id.action_sort);
-        String text = menuItem.getTitle().toString();
-
-        //TODO: Fix for backstack, doesn't work
-        if (text.equals("A-Z")) {
-            menuItem.setTitle("Z-A");
-        } else {
-            menuItem.setTitle("A-Z");
-        }
     }
 
     // when song item is clicked

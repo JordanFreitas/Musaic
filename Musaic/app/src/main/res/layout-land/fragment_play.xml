@@ -116,21 +116,24 @@
         android:layout_above="@id/albumArt"
         android:textSize="15sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:scrollHorizontally="true"/>
     <TextView
         android:id="@+id/artist"
         android:layout_above="@+id/albumArt"
         android:textSize="15sp"
         android:textStyle="italic"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:scrollHorizontally="true"/>
     <TextView
         android:id="@+id/songTitle"
         android:layout_above="@+id/artist"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_width="500sp"
-        android:layout_height="30sp" />
+        android:layout_height="30sp"
+        android:scrollHorizontally="true"/>
     <TextView
         android:id="@+id/leftTimeDisplay"
         android:paddingTop="20sp"
